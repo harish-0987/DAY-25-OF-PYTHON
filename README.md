@@ -1,178 +1,161 @@
-# Day 5: Strings in Python 🐍
+# Day 6: Lists in Python 📋
 
 > **Motto**: *"Not here to be known, here to build."*
 
-Welcome to **Day 5 of Python**! Today we learn about **Strings**, **String Operations**, and essential **String Methods** at a simple, beginner-friendly level.
+Welcome to **Day 6 of Python**! Today we dive into **Python Lists**, exploring what a list is, how it works, its mutability, and essential list methods with simple, clean, beginner-friendly examples.
 
 ---
 
-## 📌 What is a String?
+## 📌 What is a List?
 
-A **String** is a sequence of characters enclosed inside quotation marks. In Python, strings have the type `str`. Characters can be alphabets, numbers, symbols, spaces, or emojis.
+A **List** in Python is a built-in data structure used to store an **ordered collection** of items under a single variable name. Lists are created using **square brackets `[]`**, with items separated by commas.
 
-### Creating Strings:
+### Creating Lists:
 ```python
-# 1. Single Quotes
-name = 'Harish'
+# 1. List of strings
+fruits = ["apple", "banana", "cherry"]
 
-# 2. Double Quotes
-message = "Python is fun!"
+# 2. List of integers
+numbers = [10, 20, 30, 40]
 
-# 3. Triple Quotes (multi-line)
-story = """Line 1
-Line 2
-Line 3"""
+# 3. Mixed data types (heterogeneous)
+profile = ["Harish", 21, True, 99.5]
 
-print(len(name))        # Output: 6 (number of characters)
-print(type(name))       # Output: <class 'str'>
+# 4. Empty list
+empty_list = []
+
+print(fruits)       # Output: ['apple', 'banana', 'cherry']
+print(type(fruits)) # Output: <class 'list'>
+print(len(fruits))  # Output: 3
 ```
 
 ---
 
-## 💡 Key Characteristics of Python Strings
+## 💡 Key Characteristics of Python Lists
 
-- **Zero-Indexed**: The first character is at index `0`, the second at index `1`.
-- **Negative Indexing**: Access characters from the end; `-1` refers to the last character.
-- **Immutable**: Once created, a string's content cannot be changed in place.
-- **Case-Sensitive**: `"Python"` and `"python"` are completely different strings.
-- **Supports Iteration**: You can loop through each character using a `for` loop (`for char in word:`).
+- **Ordered**: Items maintain the exact order in which they were added.
+- **Mutable (Changeable)**: You can add, replace, or delete items in place without creating a new list.
+- **Allows Duplicates**: A list can store the same value multiple times (e.g. `[1, 2, 2, 3]`).
+- **Heterogeneous**: Elements can be of different data types (strings, ints, floats, booleans, even other lists).
+- **Indexed**: Elements are accessible via zero-based positive indexing (`0, 1, 2...`) or negative indexing (`-1, -2...`).
 
 ---
 
-## 🔒 String Immutability
+## 🔄 Mutability: Lists vs Strings
 
-In Python, strings are **immutable**. Once created, characters inside a string **cannot be modified in-place**.
+Unlike strings (which are immutable), **lists are mutable**. You can update any element directly using its index:
+
 ```python
-text = "Hello"
-# text[0] = "J"  -> Raises TypeError: 'str' object does not support item assignment
+numbers = [10, 20, 30]
 
-# To modify, create a new string:
-new_text = "J" + text[1:]   # "Jello"
+# Modifying index 1 in-place:
+numbers[1] = 99
+print(numbers)  # Output: [10, 99, 30]
 ```
 
-> **Remember**: When you run a method like `text.upper()`, Python returns a **brand new string**. If you want to keep the change, reassign it:
-> ```python
-> text = text.upper()
-> ```
+---
+
+## 🔍 Indexing & Slicing
+
+```text
+ List items :  ["apple", "banana", "cherry", "orange"]
+ + Index    :      0        1         2         3
+ - Index    :     -4       -3        -2        -1
+```
+
+```python
+fruits = ["apple", "banana", "cherry", "orange"]
+
+# Indexing
+print(fruits[0])    # 'apple' (first element)
+print(fruits[-1])   # 'orange' (last element)
+
+# Slicing: list[start:stop] (stop index is excluded)
+print(fruits[1:3])  # ['banana', 'cherry']
+print(fruits[:2])   # ['apple', 'banana']
+```
 
 ---
 
-## ⚙️ Basic String Operations
+## ⚙️ Basic List Operations
 
 | Operation | Operator / Syntax | Description | Example |
 | :--- | :--- | :--- | :--- |
-| **Concatenation** | `+` | Merges two strings together | `"Py" + "thon"` -> `"Python"` |
-| **Repetition** | `*` | Repeats a string `n` times | `"Hi! " * 2` -> `"Hi! Hi! "` |
-| **Indexing** | `[index]` | Fetches a single character (0-based) | `"Python"[0]` -> `'P'`, `[-1]` -> `'n'` |
-| **Slicing** | `[start:stop:step]` | Extracts a substring | `"Python"[0:2]` -> `'Py'` |
-| **Membership** | `in` / `not in` | Checks if substring exists | `'th' in 'Python'` -> `True` |
-| **Length** | `len(str)` | Returns total count of characters | `len("Python")` -> `6` |
-
-### Indexing & Slicing Visual Guide:
-```text
- Characters:   P   y   t   h   o   n
- + Index   :   0   1   2   3   4   5
- - Index   :  -6  -5  -4  -3  -2  -1
-```
-
-```python
-word = "Python"
-print(word[0])       # 'P' (first character)
-print(word[-1])      # 'n' (last character)
-print(word[0:4])     # 'Pyth' (stop index 4 is excluded)
-print(word[::2])     # 'Pto' (step by 2)
-print(word[::-1])    # 'nohtyP' (reverse string trick!)
-```
+| **Concatenation** | `+` | Merges two lists together | `[1, 2] + [3, 4]` -> `[1, 2, 3, 4]` |
+| **Repetition** | `*` | Duplicates items `n` times | `['A'] * 3` -> `['A', 'A', 'A']` |
+| **Membership** | `in` / `not in` | Checks if element exists | `'apple' in fruits` -> `True` |
+| **Length** | `len(list)` | Counts total elements | `len([1, 2, 3])` -> `3` |
 
 ---
 
-## 🔤 Escape Characters & Raw Strings
+## 🛠️ Essential List Methods
 
-Escape characters let you include special characters inside your strings using a backslash `\`:
+Python provides built-in methods called using the dot operator: `list.method()`.
 
-| Sequence | Meaning | Example |
+| Method | Description | Example |
 | :--- | :--- | :--- |
-| `\n` | New line | `"Hello\nWorld"` |
-| `\t` | Tab space | `"Name:\tHarish"` |
-| `\\` | Backslash | `"C:\\folder\\file"` |
-| `\'` / `\"` | Single / Double quote | `"He said \"Hi!\""` |
+| `append(x)` | Adds element `x` to the end of the list | `nums.append(5)` |
+| `insert(i, x)` | Inserts element `x` at specified index `i` | `nums.insert(0, 100)` |
+| `remove(x)` | Removes the first occurrence of value `x` | `nums.remove(20)` |
+| `pop([i])` | Removes and returns item at index (last by default) | `val = nums.pop()` |
+| `sort()` | Sorts the list in ascending order in-place | `nums.sort()` |
+| `reverse()` | Reverses the list elements in-place | `nums.reverse()` |
+| `count(x)` | Returns number of times value `x` occurs | `nums.count(2)` |
+| `clear()` | Removes all elements, leaving list empty | `nums.clear()` |
 
-> **Tip - Raw Strings**: Prefix a string with `r` (e.g. `r"C:\Users\name"`) to treat backslashes as literal characters without escaping.
+### Quick Code Example:
+```python
+data = [5, 2, 8, 1]
 
----
-
-## 🛠️ Essential String Methods
-
-Methods are built-in actions called using the dot operator: `string.method()`.
-
-### 1. Case Conversion
-- `text.upper()` : Converts all characters to UPPERCASE.
-- `text.lower()` : Converts all characters to lowercase.
-- `text.title()` : Capitalizes the first letter of each word.
-- `text.capitalize()` : Capitalizes only the first letter of the sentence.
-- `text.swapcase()` : Inverts uppercase to lowercase and vice versa.
-
-### 2. Trimming Whitespace
-- `text.strip()` : Removes whitespace from both ends.
-- `text.lstrip()` : Removes whitespace from the left side only.
-- `text.rstrip()` : Removes whitespace from the right side only.
-
-### 3. Searching & Counting
-- `text.find("sub")` : Returns the index of first occurrence (or `-1` if not found).
-- `text.count("sub")` : Counts how many times the substring occurs.
-- `text.startswith("H")` : Returns `True` if string begins with given prefix.
-- `text.endswith("!")` : Returns `True` if string ends with given suffix.
-
-### 4. Modifying & Splitting
-- `text.replace(old, new)` : Replaces matching occurrences with new text.
-- `text.split(delimiter)` : Splits a string into a list based on delimiter.
-- `"delimiter".join(list)` : Combines list of strings into one string.
-
-### 5. Checking & Validation (Returns `True` or `False`)
-- `text.isalpha()` : `True` if string contains ONLY alphabet letters.
-- `text.isdigit()` : `True` if string contains ONLY numbers.
-- `text.isalnum()` : `True` if string contains ONLY letters and numbers.
-- `text.isspace()` : `True` if string contains ONLY whitespace.
+data.append(10)      # [5, 2, 8, 1, 10]
+data.insert(1, 99)   # [5, 99, 2, 8, 1, 10]
+data.remove(99)      # [5, 2, 8, 1, 10]
+last_item = data.pop() # removes 10, list is [5, 2, 8, 1]
+data.sort()          # [1, 2, 5, 8]
+data.reverse()       # [8, 5, 2, 1]
+```
 
 ---
 
-## 🎨 Modern String Formatting (f-strings)
+## 🧮 Useful Built-in Functions with Lists
 
-Modern Python (3.6+) uses **f-strings** (formatted string literals) to easily insert variables:
+When working with numbers in lists:
 
 ```python
-name = "Harish"
-day = 5
-score = 95.5
+scores = [45, 88, 72, 95, 60]
 
-print(f"Welcome {name} to Day {day} of Python! Score: {score:.1f}%")
-# Output: Welcome Harish to Day 5 of Python! Score: 95.5%
+print(len(scores))  # 5 (total items)
+print(min(scores))  # 45 (smallest value)
+print(max(scores))  # 95 (largest value)
+print(sum(scores))  # 360 (sum of all items)
 ```
 
 ---
 
 ## ⚠️ Common Beginner Pitfalls & Tips
 
-1. **Item Assignment Error**: You cannot do `s[0] = 'a'`. Strings are immutable.
-2. **IndexError**: Trying to access an index beyond string length (e.g., `"abc"[10]`).
-3. **Concatenating Strings with Numbers**:
+1. **`IndexError: list index out of range`**:
+   Trying to access an index that doesn't exist (e.g. `items[5]` when the list only has 3 items).
+2. **`ValueError: list.remove(x): x not in list`**:
+   Calling `.remove()` on a value that does not exist in the list. Use `if x in list:` before removing.
+3. **Methods that return `None`**:
+   Methods like `.sort()`, `.reverse()`, and `.append()` modify the list **in-place** and return `None`.
    ```python
-   # ❌ Wrong (Causes TypeError):
-   # "Day " + 5
-   
+   # ❌ Wrong:
+   sorted_list = nums.sort() # sorted_list will be None!
+
    # ✅ Correct:
-   "Day " + str(5)  # or f"Day {5}"
+   nums.sort()               # nums is now sorted
    ```
-4. **Strings are Case-Sensitive**: Always use `.lower()` when comparing user input to prevent matching errors (e.g., `user_choice.lower() == "yes"`).
 
 ---
 
 ## 🚀 How to Run
 
-Run the complete example code with:
+Run the example script with:
 
 ```bash
-python day5.py
+python day6.py
 ```
 
 ---
@@ -181,4 +164,4 @@ python day5.py
 
 **Harish**
 - GitHub: [@harish-0987](https://github.com/harish-0987)
-- Repository: [Day-5-of-python](https://github.com/harish-0987/Day-5-of-python)
+- Repository: [Day---6-of-python](https://github.com/harish-0987/Day---6-of-python)
