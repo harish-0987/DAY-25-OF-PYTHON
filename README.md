@@ -1,293 +1,392 @@
-# Day 9: Sets in Python 🔮
+# Day 10: Dictionaries in Python 📖
 
 > **Motto**: *"Not here to be known, here to build."*
 
-Welcome to **Day 9 of Python**! Today we dive deep into **Sets in Python**—understanding what sets are, why they are useful, how hashing gives them blazing fast $O(1)$ lookups, all built-in set methods, mathematical set operations, in-place updates, and practical real-world code examples.
+Welcome to **Day 10 of Python**! Today we cover one of Python's most essential and widely used data structures: **Dictionaries (`dict`)**. Dictionaries power key parts of Python itself (like namespaces, class attributes, and module scopes) and are fundamental in real-world software engineering for JSON parsing, API design, database modeling, and fast data retrieval.
 
 ---
 
 ## 📌 Table of Contents
-1. [What is a Set?](#-what-is-a-set)
-2. [The Empty Set Gotcha](#️-the-empty-set-gotcha-important)
-3. [Key Characteristics of Python Sets](#-key-characteristics-of-python-sets)
-4. [Set Methods Summary Table](#-set-methods-summary-table)
-5. [Adding & Removing Elements](#-adding--removing-elements)
-6. [Mathematical Set Operations](#-mathematical-set-operations)
-7. [In-Place Set Updates](#-in-place-set-updates)
-8. [Set Relationships & Comparisons](#-set-relationships--comparisons)
-9. [Copying Sets](#-copying-sets)
-10. [Frozenset (Immutable Sets)](#-frozenset-immutable-set)
-11. [Practical Real-World Use Cases](#-practical-real-world-use-cases)
-12. [Summary Checklist](#-summary-checklist)
+1. [What is a Dictionary?](#-what-is-a-dictionary)
+2. [Key Characteristics of Python Dictionaries](#-key-characteristics-of-python-dictionaries)
+3. [Creating Dictionaries](#-creating-dictionaries)
+4. [Accessing Elements (`[]` vs `.get()`)](#-accessing-elements--vs-get)
+5. [Adding & Updating Elements](#-adding--updating-elements)
+6. [Removing Elements (`pop()`, `popitem()`, `del`, `clear()`)](#-removing-elements)
+7. [Dictionary Views & Iteration (`keys()`, `values()`, `items()`)](#-dictionary-views--iteration)
+8. [Other Essential Dictionary Methods](#-other-essential-dictionary-methods)
+9. [Complete Dictionary Methods Reference Table](#-complete-dictionary-methods-reference-table)
+10. [Nested Dictionaries](#-nested-dictionaries)
+11. [Dictionary Comprehensions](#-dictionary-comprehensions)
+12. [Real-World Practical Projects](#-real-world-practical-projects)
+13. [Common Pitfalls & Best Practices](#-common-pitfalls--best-practices)
+14. [How to Run the Code](#-how-to-run-the-code)
+15. [Summary Checklist](#-summary-checklist)
 
 ---
 
-## 📌 What is a Set?
+## 📌 What is a Dictionary?
 
-A **Set** in Python is a built-in data type that represents an **unordered, mutable collection of unique, hashable items**. Sets are defined using curly braces `{}` or the built-in `set()` constructor.
+A **Dictionary** in Python is a built-in data structure that stores collections of data in **key-value pairs**. Each item in a dictionary has an identifier called a **key** which maps directly to a **value**:
+
+$$\text{Dictionary} = \{ \text{key}_1: \text{value}_1, \text{key}_2: \text{value}_2, \dots \}$$
+
+Under the hood, Python dictionaries are implemented using **Hash Tables**, which means accessing, inserting, or removing values has an average time complexity of **$O(1)$** (constant time).
 
 ```python
-# 1. Basic set of strings
-fruits = {"apple", "banana", "cherry"}
+# A simple Python dictionary representing a developer profile
+developer = {
+    "name": "Harish",
+    "role": "Backend Engineer",
+    "experience_years": 2,
+    "skills": ["Python", "FastAPI", "PostgreSQL"],
+    "is_certified": True
+}
 
-# 2. Set of integers
-numbers = {10, 20, 30, 40}
-
-# 3. Mixed data types
-profile = {"Harish", 21, True, 99.5}
-
-# 4. Sets automatically eliminate duplicates!
-duplicate_nums = {1, 2, 2, 3, 3, 3, 4}
-print(duplicate_nums)  # Output: {1, 2, 3, 4}
+print(developer["name"])  # Output: Harish
 ```
 
 ---
 
-## ⚠️ The Empty Set Gotcha (Important!)
-
-In Python, `{}` creates an **empty dictionary**, NOT an empty set! To create an empty set, you **must** use `set()`:
-
-```python
-empty_dict = {}     # Type: <class 'dict'> ❌
-empty_set = set()   # Type: <class 'set'>  ✅
-
-print(type(empty_dict))  # <class 'dict'>
-print(type(empty_set))   # <class 'set'>
-```
-
----
-
-## 💡 Key Characteristics of Python Sets
+## 💡 Key Characteristics of Python Dictionaries
 
 | Characteristic | Description |
 | :--- | :--- |
-| **Unordered** | Elements have no defined position. Items may appear in any order. |
-| **Unindexed** | Slicing and indexing like `my_set[0]` are **not supported** (`TypeError`). |
-| **Unique Elements** | Duplicate values are never stored. Great for deduplication. |
-| **Mutable** | You can add, remove, and update elements at runtime. |
-| **Hashable Elements Only** | Members must be immutable (numbers, strings, tuples). Lists or dicts cannot be set members. |
-| **Fast Lookups** | Backed by a hash table, membership checks (`x in my_set`) run in average **$O(1)$ time complexity**. |
+| **Key-Value Mapping** | Every element is stored as a pair: `key: value`. |
+| **Ordered** | Since Python 3.7+, dictionaries preserve insertion order. |
+| **Mutable** | You can add, modify, and delete keys and values after creation. |
+| **Unique Keys** | Duplicate keys are NOT permitted. Specifying an existing key overwrites the old value. |
+| **Hashable Keys** | Keys MUST be immutable types (`str`, `int`, `float`, `tuple`). Lists and dicts cannot be keys. |
+| **Flexible Values** | Values can be of **any** type (primitives, lists, sets, nested dicts) and can duplicate. |
+| **High Performance** | Key lookups run in $O(1)$ average time complexity via hashing. |
 
 ---
 
-## 📋 Set Methods Summary Table
+## 🛠 Creating Dictionaries
 
-| Method | Description | Equivalent Operator |
-| :--- | :--- | :---: |
-| `add(elem)` | Adds a single element to the set | — |
-| `update(iterable)` | Adds all elements from an iterable (list, tuple, set) | `\|=` |
-| `remove(elem)` | Removes element; raises `KeyError` if not found | — |
-| `discard(elem)` | Removes element safely; **no error** if not found | — |
-| `pop()` | Removes and returns an arbitrary element | — |
-| `clear()` | Removes all elements from the set | — |
-| `copy()` | Returns a shallow copy of the set | — |
-| `union(*others)` | Returns a new set with elements from both sets | `\|` |
-| `intersection(*others)` | Returns a new set with shared elements | `&` |
-| `difference(*others)` | Returns a new set with elements in first set but not second | `-` |
-| `symmetric_difference(other)` | Returns elements in either set, but not both | `^` |
-| `intersection_update(*others)` | Modifies set in-place to keep only common elements | `&=` |
-| `difference_update(*others)` | Modifies set in-place by removing items in other sets | `-=` |
-| `symmetric_difference_update(other)` | Modifies set to keep only symmetric differences | `^=` |
-| `issubset(other)` | Returns `True` if current set is contained in another | `<=` |
-| `issuperset(other)` | Returns `True` if current set contains all items of another | `>=` |
-| `isdisjoint(other)` | Returns `True` if two sets share **no common elements** | — |
-
----
-
-## ➕ Adding & Removing Elements
-
-### 1. Adding Elements: `add()` vs `update()`
-```python
-skills = {"Python", "Git"}
-
-# add() takes a single item
-skills.add("SQL")
-print(skills)  # {'Python', 'Git', 'SQL'}
-
-# update() takes any iterable (list, set, tuple)
-skills.update(["Docker", "Linux"])
-print(skills)  # {'Python', 'Git', 'SQL', 'Docker', 'Linux'}
-```
-
-### 2. Removing Elements: `remove()` vs `discard()` vs `pop()` vs `clear()`
-```python
-languages = {"C", "Java", "Python", "Rust"}
-
-# remove() raises KeyError if item is missing
-languages.remove("C")
-
-# discard() is safe: does NOT raise error if missing
-languages.discard("HTML")  # No error!
-
-# pop() removes and returns an arbitrary element
-removed = languages.pop()
-print("Popped:", removed)
-
-# clear() empties the set
-languages.clear()
-print(languages)  # set()
-```
-
----
-
-## 📐 Mathematical Set Operations
+Python offers multiple convenient ways to define dictionaries:
 
 ```python
-A = {1, 2, 3, 4, 5}
-B = {4, 5, 6, 7, 8}
-```
+# 1. Empty dictionary
+empty_dict_1 = {}
+empty_dict_2 = dict()
 
-### 1. Union (`|` or `union()`)
-Combines all elements from both sets without duplicates:
-```python
-print(A | B)        # {1, 2, 3, 4, 5, 6, 7, 8}
-print(A.union(B))   # {1, 2, 3, 4, 5, 6, 7, 8}
-```
-
-### 2. Intersection (`&` or `intersection()`)
-Finds only elements present in **both** sets:
-```python
-print(A & B)               # {4, 5}
-print(A.intersection(B))  # {4, 5}
-```
-
-### 3. Difference (`-` or `difference()`)
-Finds elements in the first set that are **not** in the second set:
-```python
-print(A - B)              # {1, 2, 3}
-print(B - A)              # {6, 7, 8}
-print(A.difference(B))    # {1, 2, 3}
-```
-
-### 4. Symmetric Difference (`^` or `symmetric_difference()`)
-Finds elements that are in either set, but **not in both**:
-```python
-print(A ^ B)                         # {1, 2, 3, 6, 7, 8}
-print(A.symmetric_difference(B))     # {1, 2, 3, 6, 7, 8}
-```
-
----
-
-## 🔄 In-Place Set Updates
-
-Instead of creating a new set, these methods mutate the caller set directly:
-
-```python
-x = {"apple", "banana", "cherry"}
-y = {"google", "apple"}
-
-# Keep only common items
-x.intersection_update(y)
-print(x)  # {'apple'}
-
-# Remove items found in y
-x = {"apple", "banana", "cherry"}
-x.difference_update(y)
-print(x)  # {'banana', 'cherry'}
-
-# Keep only items unique to each
-x = {"apple", "banana", "cherry"}
-x.symmetric_difference_update(y)
-print(x)  # {'banana', 'cherry', 'google'}
-```
-
----
-
-## 🔍 Set Relationships & Comparisons
-
-```python
-A = {1, 2, 3}
-B = {1, 2, 3, 4, 5}
-C = {7, 8, 9}
-
-# 1. issubset() / <=
-print(A.issubset(B))   # True (All elements of A are in B)
-print(A <= B)          # True
-
-# 2. issuperset() / >=
-print(B.issuperset(A)) # True (B contains all elements of A)
-print(B >= A)          # True
-
-# 3. isdisjoint()
-print(A.isdisjoint(C)) # True (A and C share NO elements)
-print(A.isdisjoint(B)) # False (They share 1, 2, 3)
-```
-
----
-
-## 📋 Copying Sets
-
-```python
-original = {1, 2, 3}
-
-# Shallow copy using copy()
-cloned = original.copy()
-cloned.add(4)
-
-print("Original:", original)  # {1, 2, 3}
-print("Cloned:  ", cloned)    # {1, 2, 3, 4}
-```
-
----
-
-## ❄️ Frozenset (Immutable Set)
-
-If you need an immutable, hashable set (for example, to use as a dictionary key or as an element inside another set), use `frozenset()`:
-
-```python
-frozen = frozenset([1, 2, 3, 4])
-print(frozen)  # frozenset({1, 2, 3, 4})
-
-# Dictionary using frozenset as a key
-permissions = {
-    frozenset({"read", "write"}): "Editor",
-    frozenset({"read"}): "Viewer"
+# 2. Dictionary literal with curly braces
+student = {
+    "id": "STU101",
+    "name": "Harish",
+    "gpa": 3.9
 }
-print(permissions[frozenset({"read", "write"})])  # Editor
+
+# 3. Using the dict() constructor with keyword arguments
+config = dict(host="localhost", port=5432, debug=True)
+
+# 4. From a list of (key, value) tuples
+pairs = [("USD", 83.5), ("EUR", 91.2), ("GBP", 106.8)]
+exchange_rates = dict(pairs)
+```
+
+> [!NOTE]
+> `{}` creates an **empty dictionary**, not an empty set. To create an empty set, you must call `set()`.
+
+---
+
+## 🔍 Accessing Elements (`[]` vs `.get()`)
+
+There are two primary ways to retrieve values by their keys:
+
+### 1. Square Bracket Notation: `dict[key]`
+- Fast direct lookup.
+- **Raises `KeyError`** if the key is not in the dictionary.
+
+### 2. The `.get(key, default=None)` Method
+- **Safe retrieval**: Does **NOT** crash if the key is missing.
+- Returns `None` by default, or any custom default value you provide.
+
+```python
+user = {"username": "harish_dev", "plan": "pro"}
+
+# 1. Square brackets
+print(user["username"])  # Output: harish_dev
+# print(user["email"])   # ❌ Raises KeyError: 'email'
+
+# 2. .get() method
+print(user.get("plan"))                  # Output: pro
+print(user.get("email"))                 # Output: None (No crash!)
+print(user.get("email", "not_provided")) # Output: not_provided
+
+# 3. Checking membership with 'in' (checks KEYS, not values)
+if "username" in user:
+    print("User identifier exists!")
 ```
 
 ---
 
-## 🚀 Practical Real-World Use Cases
+## ✏️ Adding & Updating Elements
 
-### 1. Removing Duplicates from a List
+### 1. Direct Assignment
+Assigning to an existing key updates its value; assigning to a new key adds it.
+
 ```python
-raw_data = ["apple", "banana", "apple", "orange", "banana"]
-unique_data = list(set(raw_data))
-print(unique_data)  # ['orange', 'banana', 'apple']
+car = {"brand": "Tesla", "model": "Model 3"}
+
+# Adding a new key
+car["year"] = 2024
+
+# Updating an existing key
+car["model"] = "Model Y"
 ```
 
-### 2. Fast Membership Testing ($O(1)$)
-```python
-allowed_users = {"alice", "bob", "harish", "charlie"}
+### 2. The `.update()` Method
+Updates the dictionary with elements from another dictionary or iterable of key-value pairs.
 
-username = input("Enter username: ")
-if username in allowed_users:
-    print("Access Granted!")
+```python
+car.update({"color": "Midnight Silver", "price": 45000})
 ```
 
-### 3. Mutual Friends / Common Interests
-```python
-user1_friends = {"Alice", "Bob", "Charlie", "David"}
-user2_friends = {"Charlie", "David", "Eve", "Frank"}
+### 3. Dictionary Merge Operators (Python 3.9+)
+- `|` : Merges two dictionaries into a **new** dictionary.
+- `|=` : Merges into the left dictionary **in-place**.
 
-mutual = user1_friends & user2_friends
-print("Mutual Friends:", mutual)  # {'Charlie', 'David'}
+```python
+base_specs = {"cpu": "M3", "ram": "16GB"}
+upgrade_specs = {"storage": "1TB", "ram": "32GB"}
+
+# Merged into new dict ('storage' added, 'ram' updated to 32GB)
+full_specs = base_specs | upgrade_specs
+
+# In-place merge
+base_specs |= {"warranty": "3 Years"}
+```
+
+---
+
+## 🗑 Removing Elements
+
+| Method / Keyword | Behavior | Missing Key Handling | Return Value |
+| :--- | :--- | :--- | :--- |
+| `pop(key, [default])` | Removes specified key | Returns `default` if provided, else raises `KeyError` | The removed value |
+| `popitem()` | Removes last inserted item (LIFO) | Raises `KeyError` if dictionary is empty | `(key, value)` tuple |
+| `del dict[key]` | Deletes specified key | Raises `KeyError` | `None` |
+| `clear()` | Removes all items | Safe on empty dictionary | `None` (dict becomes `{}`) |
+
+```python
+cart = {"apple": 5, "banana": 12, "mango": 3, "orange": 8}
+
+# 1. pop()
+removed_val = cart.pop("mango")           # returns 3
+missing_val = cart.pop("kiwi", "Not in cart")  # returns 'Not in cart'
+
+# 2. popitem() - removes last inserted item
+last_item = cart.popitem()                # returns ('orange', 8)
+
+# 3. del
+del cart["banana"]
+
+# 4. clear()
+cart.clear()                              # cart is now {}
+```
+
+---
+
+## 🔄 Dictionary Views & Iteration
+
+Python provides three dynamic view objects:
+- `dict.keys()`: view of all keys.
+- `dict.values()`: view of all values.
+- `dict.items()`: view of all `(key, value)` pairs as tuples.
+
+```python
+scores = {"Alice": 92, "Bob": 78, "Charlie": 85}
+
+# 1. Iterating through keys (default)
+for name in scores:
+    print(name)
+
+# 2. Iterating through values
+for score in scores.values():
+    print(score)
+
+# 3. Iterating through key-value pairs with .items() (Recommended)
+for name, score in scores.items():
+    print(f"{name} scored {score} points")
+```
+
+---
+
+## ⚡ Other Essential Dictionary Methods
+
+### 1. `setdefault(key, default)`
+If `key` exists, returns its value without modifying it. If `key` does not exist, inserts `key` with value `default` and returns `default`.
+
+```python
+profile = {"name": "Harish"}
+city = profile.setdefault("city", "Bengaluru")
+# profile is now {'name': 'Harish', 'city': 'Bengaluru'}
+```
+
+### 2. `fromkeys(iterable, default_value)`
+Creates a new dictionary from a collection of keys, all initialized to `default_value`.
+
+```python
+roles = ["admin", "editor", "moderator"]
+access = dict.fromkeys(roles, "active")
+# {'admin': 'active', 'editor': 'active', 'moderator': 'active'}
+```
+
+### 3. `copy()` (Shallow Copy)
+Avoids unintended side effects caused by simple variable assignment (`b = a` creates an alias, not a new object).
+
+```python
+original = {"a": 1, "b": 2}
+cloned = original.copy()
+cloned["c"] = 3  # Does NOT affect original!
+```
+
+---
+
+## 📊 Complete Dictionary Methods Reference Table
+
+| Method | Syntax | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `get()` | `d.get(k, [def])` | Returns value for key, or `def` (or `None`) if absent. | `d.get('id', 0)` |
+| `keys()` | `d.keys()` | Returns a view object displaying all keys. | `list(d.keys())` |
+| `values()` | `d.values()` | Returns a view object displaying all values. | `sum(d.values())` |
+| `items()` | `d.items()` | Returns a view of all `(key, value)` tuples. | `for k, v in d.items():` |
+| `update()` | `d.update(other)` | Updates dictionary in-place with another dict/iterable. | `d.update({'x': 10})` |
+| `pop()` | `d.pop(k, [def])` | Removes key and returns its value. | `val = d.pop('temp')` |
+| `popitem()` | `d.popitem()` | Removes and returns the last inserted `(key, value)`. | `k, v = d.popitem()` |
+| `setdefault()` | `d.setdefault(k, v)` | Gets value if exists; if absent, inserts `k: v`. | `d.setdefault('role', 'user')` |
+| `fromkeys()` | `dict.fromkeys(seq, v)`| Creates a new dict with keys from sequence. | `dict.fromkeys(['a','b'], 0)` |
+| `copy()` | `d.copy()` | Returns a shallow copy of the dictionary. | `new_d = d.copy()` |
+| `clear()` | `d.clear()` | Removes all elements from the dictionary. | `d.clear()` |
+
+---
+
+## 🏗 Nested Dictionaries
+
+Dictionaries can contain other dictionaries as values, forming trees of structured data:
+
+```python
+company = {
+    "emp_101": {
+        "name": "Harish",
+        "department": "Engineering",
+        "salary": 85000
+    },
+    "emp_102": {
+        "name": "Priya",
+        "department": "Design",
+        "salary": 78000
+    }
+}
+
+# Accessing nested fields
+print(company["emp_101"]["name"])        # Harish
+print(company["emp_102"]["department"])  # Design
+
+# Modifying nested data
+company["emp_101"]["salary"] += 5000
+```
+
+---
+
+## 🚀 Dictionary Comprehensions
+
+A clean, declarative one-liner for generating or transforming dictionaries:
+
+$$\{ \text{key\_expr}: \text{value\_expr} \;\mathbf{for}\; \text{item} \;\mathbf{in}\; \text{iterable} \;(\mathbf{if}\; \text{condition}) \}$$
+
+```python
+# 1. Squares of numbers
+squares = {x: x**2 for x in range(1, 6)}
+# {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# 2. Filtering items
+grades = {"Math": 92, "English": 74, "Physics": 88, "History": 65}
+passed_subjects = {sub: mark for sub, mark in grades.items() if mark >= 75}
+
+# 3. Inverting keys and values
+users = {"user1": "admin", "user2": "editor"}
+inverted = {role: uid for uid, role in users.items()}
+```
+
+---
+
+## 💼 Real-World Practical Projects
+
+### 1. Word Frequency Counter
+Count occurrences of each word in a paragraph (used in search indexing and NLP):
+
+```python
+text = "code test build deploy test build test"
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+
+print(freq)
+# {'code': 1, 'test': 3, 'build': 2, 'deploy': 1}
+```
+
+### 2. E-Commerce Cart & Bill Calculator
+Calculate line-item subtotals, apply discounts, and generate final payable amounts:
+
+```python
+price_catalog = {"keyboard": 1200, "mouse": 600, "pad": 250}
+cart = {"keyboard": 1, "mouse": 2, "pad": 3}
+
+subtotal = sum(price_catalog[item] * qty for item, qty in cart.items())
+print(f"Total Amount: Rs. {subtotal:.2f}")
+```
+
+---
+
+## ⚠️ Common Pitfalls & Best Practices
+
+> [!WARNING]
+> **1. Unhashable Keys**: Never use lists, sets, or other dictionaries as keys. Keys must be immutable (strings, numbers, or tuples).
+> ```python
+> bad_dict = {[1, 2]: "points"}   # ❌ Raises TypeError: unhashable type: 'list'
+> good_dict = {(1, 2): "points"}  # ✅ Valid!
+> ```
+
+> [!CAUTION]
+> **2. Modifying Size During Iteration**: Never add or delete keys from a dictionary while directly looping over it.
+> ```python
+> # ❌ Raises RuntimeError: dictionary changed size during iteration
+> for k in my_dict:
+>     if my_dict[k] == 0:
+>         del my_dict[k]
+>
+> # ✅ Fix: Iterate over a snapshot list of keys
+> for k in list(my_dict.keys()):
+>     if my_dict[k] == 0:
+>         del my_dict[k]
+> ```
+
+> [!TIP]
+> **3. Prefer `.get()` for optional fields**: Use `.get(key, default)` when reading configurations, API payloads, or user inputs to avoid unhandled `KeyError` crashes.
+
+---
+
+## 💻 How to Run the Code
+
+Run the accompanying script [day10.py](file:///c:/Users/pedda/OneDrive/Desktop/python%201/day10.py) using your Python interpreter:
+
+```bash
+python day10.py
 ```
 
 ---
 
 ## ✅ Summary Checklist
 
-- [x] Set definition: Unordered, mutable, unique elements
-- [x] Empty set syntax: `set()` (not `{}`)
-- [x] Adding: `add()` and `update()`
-- [x] Removing: `remove()`, `discard()`, `pop()`, `clear()`
-- [x] Operations: `union (|)`, `intersection (&)`, `difference (-)`, `symmetric_difference (^)`
-- [x] Comparisons: `issubset()`, `issuperset()`, `isdisjoint()`
-- [x] In-place updates: `intersection_update()`, `difference_update()`, etc.
-- [x] Immutable sets: `frozenset()`
-
----
-
-*Authored by Harish — "Not here to be known, here to build."*
+- [x] Understand what a dictionary is and how hash tables provide $O(1)$ lookups
+- [x] Master accessing elements safely using `.get()`
+- [x] Add, update, and merge dictionaries using assignments, `.update()`, and `|`
+- [x] Delete elements using `pop()`, `popitem()`, `del`, and `clear()`
+- [x] Iterate through keys, values, and pairs with `.items()`
+- [x] Utilize helper methods (`setdefault()`, `fromkeys()`, `copy()`)
+- [x] Build complex structures with nested dictionaries
+- [x] Write concise dictionary comprehensions
+- [x] Avoid common pitfalls (unhashable keys, mutating during iteration)
