@@ -1,173 +1,189 @@
-# Day 13: Functions and Their Types in Python ⚡
+# Day 14: List Comprehension in Python ⚡
 
 > **Motto**: *"Not here to be known, here to build."*
 
-Welcome to **Day 13 of Python**! Today we cover the essentials of **Functions** and their **Types** in Python. Functions help avoid repetitive code, break problems into smaller blocks, and make programs easy to read, test, and maintain.
+Welcome to **Day 14 of Python**! Today we dive into **List Comprehension** — one of Python's most loved and powerful features. It offers a concise, elegant, and Pythonic way to construct new lists from existing iterables.
 
 ---
 
 ## 📌 Table of Contents
-1. [What is a Function?](#1-what-is-a-function)
-2. [Types of Functions in Python](#2-types-of-functions-in-python)
-   - [A. Built-in Functions](#a-built-in-functions)
-   - [B. User-Defined Functions](#b-user-defined-functions)
-   - [C. Lambda / Anonymous Functions](#c-lambda--anonymous-functions)
-3. [4 Types of Functions (Input & Output)](#3-4-types-of-functions-input--output)
-   - [Type 1: Without arguments & without return value](#type-1-without-arguments-and-without-return-value)
-   - [Type 2: With arguments & without return value](#type-2-with-arguments-and-without-return-value)
-   - [Type 3: Without arguments & with return value](#type-3-without-arguments-and-with-return-value)
-   - [Type 4: With arguments & with return value](#type-4-with-arguments-and-with-return-value)
-4. [Basic Types of Arguments](#4-basic-types-of-arguments)
-   - [Positional Arguments](#a-positional-arguments)
-   - [Keyword Arguments](#b-keyword-arguments)
-   - [Default Arguments](#c-default-arguments)
-5. [Quick Summary](#5-quick-summary)
-6. [How to Run](#6-how-to-run)
+1. [What is List Comprehension?](#1-what-is-list-comprehension)
+2. [Traditional Loop vs. List Comprehension](#2-traditional-loop-vs-list-comprehension)
+3. [List Comprehension with `if` Condition (Filtering)](#3-list-comprehension-with-if-condition-filtering)
+4. [List Comprehension with `if-else` (Conditional Values)](#4-list-comprehension-with-if-else-conditional-values)
+5. [List Comprehension with Strings & Other Iterables](#5-list-comprehension-with-strings--other-iterables)
+6. [Nested List Comprehension (Basic Level)](#6-nested-list-comprehension-basic-level)
+7. [Quick Syntax Cheatsheet & Summary](#7-quick-syntax-cheatsheet--summary)
+8. [How to Run](#8-how-to-run)
 
 ---
 
-## 1. What is a Function?
+## 1. What is List Comprehension?
 
-A **function** is a reusable block of code that performs a specific task. A function runs only when it is called.
+**List Comprehension** provides a compact way to process all or part of the elements in an iterable and return a list with the results.
+
+### Basic Syntax:
+```python
+new_list = [expression for item in iterable]
+```
+
+- **`expression`**: What gets calculated or returned for each item.
+- **`item`**: The variable representing each element from the iterable.
+- **`iterable`**: Any collection/sequence (e.g., list, tuple, string, `range()`).
+
+---
+
+## 2. Traditional Loop vs. List Comprehension
+
+Let's generate the squares of numbers from 1 to 5:
+
+### ❌ Traditional `for` Loop:
+```python
+squares = []
+for num in range(1, 6):
+    squares.append(num ** 2)
+
+print(squares)  # Output: [1, 4, 9, 16, 25]
+```
+
+###  List Comprehension (1 Line):
+```python
+squares = [num ** 2 for num in range(1, 6)]
+
+print(squares)  # Output: [1, 4, 9, 16, 25]
+```
+
+> **Why use List Comprehension?**  
+> - **Cleaner**: Reduces 3–4 lines of boilerplate code into a single readable line.
+> - **Faster**: Often executes faster in Python than a manual loop with `.append()`.
+
+---
+
+## 3. List Comprehension with `if` Condition (Filtering)
+
+You can filter items by placing an `if` statement at the end. Only elements where the condition evaluates to `True` are added to the list.
 
 ### Syntax:
 ```python
-def function_name(parameters):
-    # code to execute
-    return value  # optional
+new_list = [expression for item in iterable if condition]
 ```
 
-### Basic Example:
+### Example 1: Filter Even Numbers
 ```python
-def greet():
-    print("Hello, welcome to Day 13 of Python!")
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-greet()  # Calling the function
+# Keep only even numbers
+evens = [n for n in numbers if n % 2 == 0]
+print(evens)  # Output: [2, 4, 6, 8, 10]
+```
+
+### Example 2: Filter Numbers Greater than 5
+```python
+greater_than_5 = [n for n in numbers if n > 5]
+print(greater_than_5)  # Output: [6, 7, 8, 9, 10]
 ```
 
 ---
 
-## 2. Types of Functions in Python
+## 4. List Comprehension with `if-else` (Conditional Values)
 
-Python functions are primarily classified into three types:
+When you want to choose between two expressions based on a condition, place the `if-else` **before** the `for` keyword.
 
-### A. Built-in Functions
-Functions that come built into Python:
+### Syntax:
 ```python
-numbers = [10, 20, 30, 40]
-print(len(numbers))  # 4
-print(max(numbers))  # 40
-print(min(numbers))  # 10
+new_list = [expression_if_true if condition else expression_if_false for item in iterable]
 ```
 
-### B. User-Defined Functions
-Functions created by the programmer using the `def` keyword:
+### Example 1: Label Even and Odd Numbers
 ```python
-def square(num):
-    return num * num
+numbers = [1, 2, 3, 4, 5, 6]
 
-print(square(5))  # 25
+labels = ["Even" if n % 2 == 0 else "Odd" for n in numbers]
+print(labels)
+# Output: ['Odd', 'Even', 'Odd', 'Even', 'Odd', 'Even']
 ```
 
-### C. Lambda / Anonymous Functions
-Small, single-line functions without a name created using the `lambda` keyword:
+### Example 2: Double Even Numbers, Keep Odd Numbers Unchanged
 ```python
-double = lambda x: x * 2
-print(double(6))  # 12
+result = [n * 2 if n % 2 == 0 else n for n in numbers]
+print(result)  # Output: [1, 4, 3, 8, 5, 12]
 ```
 
 ---
 
-## 3. 4 Types of Functions (Input & Output)
+## 5. List Comprehension with Strings & Other Iterables
 
-Based on whether a function takes parameters and returns a value:
+List comprehension works on any sequence, including strings and word lists.
 
-### Type 1: Without Arguments and Without Return Value
-Does not accept input and does not return anything.
+### Example 1: Uppercase Characters
 ```python
-def say_hello():
-    print("Hello!")
-
-say_hello()
+word = "python"
+letters = [char.upper() for char in word]
+print(letters)  # Output: ['P', 'Y', 'T', 'H', 'O', 'N']
 ```
 
-### Type 2: With Arguments and Without Return Value
-Accepts input parameters but does not return a value.
+### Example 2: Extracting Vowels from Text
 ```python
-def greet_user(name):
-    print(f"Hello, {name}!")
-
-greet_user("Harish")
+text = "List Comprehension is awesome"
+vowels = [char for char in text if char.lower() in 'aeiou']
+print(vowels)  # Output: ['i', 'o', 'e', 'e', 'i', 'o', 'i', 'a', 'e', 'o', 'e']
 ```
 
-### Type 3: Without Arguments and With Return Value
-Does not accept inputs, but returns a value back to the caller.
+### Example 3: Capitalize List of Words
 ```python
-def get_pi():
-    return 3.14159
-
-result = get_pi()
-print(result)  # 3.14159
-```
-
-### Type 4: With Arguments and With Return Value
-Accepts input parameters and returns a calculated result.
-```python
-def add(a, b):
-    return a + b
-
-total = add(10, 20)
-print(total)  # 30
+fruits = ["apple", "banana", "cherry"]
+capitalized = [fruit.capitalize() for fruit in fruits]
+print(capitalized)  # Output: ['Apple', 'Banana', 'Cherry']
 ```
 
 ---
 
-## 4. Basic Types of Arguments
+## 6. Nested List Comprehension (Basic Level)
 
-### A. Positional Arguments
-Arguments matched by their position/order:
+You can write nested loops in list comprehension. The order of `for` clauses matches the order of nested regular loops.
+
+### Example 1: Flattening a 2D Matrix into a 1D List
 ```python
-def display_info(name, age):
-    print(f"Name: {name}, Age: {age}")
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
 
-display_info("Harish", 21)
+# Flatten matrix
+flattened = [item for row in matrix for item in row]
+print(flattened)  # Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### B. Keyword Arguments
-Arguments passed with explicit parameter names:
+### Example 2: Creating Cartesian Product Pairs
 ```python
-display_info(age=21, name="Harish")
-```
+colors = ["red", "green"]
+objects = ["ball", "pen"]
 
-### C. Default Arguments
-Parameters that have a default fallback value if no argument is passed:
-```python
-def welcome_country(name, country="India"):
-    print(f"Hello {name}, from {country}!")
-
-welcome_country("Harish")            # Uses default "India"
-welcome_country("Alex", "Canada")     # Overrides default
+pairs = [(c, o) for c in colors for o in objects]
+print(pairs)
+# Output: [('red', 'ball'), ('red', 'pen'), ('green', 'ball'), ('green', 'pen')]
 ```
 
 ---
 
-## 5. Quick Summary
+## 7. Quick Syntax Cheatsheet & Summary
 
-| Category | Description | Example |
+| Use Case | Syntax Pattern | Example |
 | :--- | :--- | :--- |
-| **Definition** | Reusable code block | `def func():` |
-| **Built-in** | Provided out-of-the-box by Python | `print()`, `len()` |
-| **User-defined** | Custom created functions | `def square(x):` |
-| **Lambda** | Anonymous one-liner function | `lambda x: x * 2` |
-| **Positional Arg** | Passed according to position | `add(5, 10)` |
-| **Keyword Arg** | Passed using parameter name | `add(b=10, a=5)` |
-| **Default Arg** | Fallback parameter value | `def greet(c="India"):` |
+| **Basic Mapping** | `[expr for x in iterable]` | `[x * 2 for x in range(5)]` |
+| **Filtering (`if`)** | `[expr for x in iterable if cond]` | `[x for x in nums if x > 0]` |
+| **Transforming (`if-else`)** | `[expr1 if cond else expr2 for x in iterable]` | `["Pos" if x > 0 else "Neg" for x in nums]` |
+| **String processing** | `[char.upper() for char in text]` | `[c for c in "hello"]` |
+| **Nested loops** | `[expr for x in list1 for y in list2]` | `[(x, y) for x in A for y in B]` |
+
+> 💡 **Best Practice Tip**: Use list comprehensions when the logic is straightforward. If the comprehension has too many conditions or loops and becomes hard to read, stick to regular `for` loops!
 
 ---
 
-## 6. How to Run
+## 8. How to Run
 
-Run the script in your terminal using:
+Execute the script directly in your terminal:
 ```bash
-python day13.py
+python day14.py
 ```
