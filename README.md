@@ -1,220 +1,253 @@
-# Day 16: Basic Email Automation in Python ✉️🚀
+# Day 17: Recursion in Python (Basic Level) 🔄⚡
 
-> **Motto**: *"Not here to be known, here to build."*
+> **Motto**: *"Not here to be known, here to build."*  
+> **Author**: Harish  
+> **Repository**: [DAY-17-OF-PYTHON](https://github.com/harish-0987/DAY-17-OF-PYTHON)
 
-Welcome to **Day 16 of Python**! Today we explore **Email Automation** using Python's built-in standard libraries (`smtplib` and `email.mime`). Learn how to automate sending transactional emails, alerts, rich HTML newsletters, and file attachments without third-party dependencies.
+Welcome to **Day 17 of Python**! Today we dive into **Recursion**—one of the foundational programming concepts where a function solves complex problems by breaking them down into smaller instances of themselves.
 
 ---
 
 ## 📌 Table of Contents
-1. [What is Email Automation & SMTP?](#1-what-is-email-automation--smtp)
-2. [Architecture & Email Flow](#2-architecture--email-flow)
-3. [Setting Up Secure Credentials (App Passwords)](#3-setting-up-secure-credentials-app-passwords)
-4. [Key Python Modules](#4-key-python-modules)
-5. [Code Examples & Walkthrough](#5-code-examples--walkthrough)
-   - [Example 1: Sending Plain Text Email](#example-1-sending-plain-text-email)
-   - [Example 2: Sending Rich HTML Formatted Email](#example-2-sending-rich-html-formatted-email)
-   - [Example 3: Email with File Attachments](#example-3-email-with-file-attachments)
-   - [Example 4: Sending Bulk Personalized Emails](#example-4-sending-bulk-personalized-emails)
-   - [Example 5: Error Handling & Secure Transmission](#example-5-error-handling--secure-transmission)
-6. [Best Practices & Security Rules](#6-best-practices--security-rules)
+1. [What is Recursion?](#1-what-is-recursion)
+2. [The Anatomy of a Recursive Function](#2-the-anatomy-of-a-recursive-function)
+3. [Understanding the Call Stack & Unwinding](#3-understanding-the-call-stack--unwinding)
+4. [Code Examples & Walkthrough](#4-code-examples--walkthrough)
+   - [Example 1: Countdown & Stack Order](#example-1-countdown--stack-order)
+   - [Example 2: Factorial of a Number (n!)](#example-2-factorial-of-a-number-n)
+   - [Example 3: Sum of First N Natural Numbers](#example-3-sum-of-first-n-natural-numbers)
+   - [Example 4: Fibonacci Sequence](#example-4-fibonacci-sequence)
+   - [Example 5: Sum of Digits](#example-5-sum-of-digits)
+   - [Example 6: Power Function (x^n)](#example-6-power-function-xn)
+   - [Example 7: String Reversal & Palindrome Check](#example-7-string-reversal--palindrome-check)
+   - [Example 8: Recursion Limit & Handling RecursionError](#example-8-recursion-limit--handling-recursionerror)
+5. [Recursion vs Iteration (Loops)](#5-recursion-vs-iteration-loops)
+6. [Best Practices for Writing Recursive Functions](#6-best-practices-for-writing-recursive-functions)
 7. [How to Run](#7-how-to-run)
 8. [Summary & Key Takeaways](#8-summary--key-takeaways)
 
 ---
 
-## 1. What is Email Automation & SMTP?
+## 1. What is Recursion?
 
-**Email Automation** is the programmatic creation, configuration, and dispatch of email messages from an application.
+**Recursion** is a technique in programming where a function calls itself to solve a smaller instance of the same problem until it reaches a designated stopping point.
 
-### Understanding SMTP
-- **SMTP** stands for **Simple Mail Transfer Protocol**. It is the industry standard protocol for transmitting email messages over IP networks.
-- Python communicates with an SMTP server (such as Gmail, Outlook, or Yahoo) which acts as the mail transfer agent delivering messages to the recipient's mail server.
-
-### Standard Ports & Encryption:
-| Protocol / Method | Standard Port | Description |
-| :--- | :--- | :--- |
-| **SSL (`SMTP_SSL`)** | **465** | Connection is encrypted immediately upon establishing the socket. |
-| **STARTTLS (`starttls()`)** | **587** | Starts as plain text connection, then upgrades securely to TLS. |
+Instead of writing repetitive loops, recursion allows us to express mathematical equations and structural data patterns directly in code.
 
 ---
 
-## 2. Architecture & Email Flow
+## 2. The Anatomy of a Recursive Function
 
-```
-+-------------------------------------------------------+
-|                    Python Script                      |
-|  - MIMEText / MIMEMultipart (Compose subject, body)   |
-|  - MIMEBase & encoders (Attach files)                 |
-+-------------------------------------------------------+
-                           |
-               (SMTP_SSL or STARTTLS)
-                           v
-+-------------------------------------------------------+
-|                     SMTP Server                       |
-|   (e.g., smtp.gmail.com / smtp.office365.com)         |
-+-------------------------------------------------------+
-                           |
-                           v
-+-------------------------------------------------------+
-|                  Recipient Mailbox                    |
-|             (Inbox / Spam Filter / Delivery)          |
-+-------------------------------------------------------+
+Every valid recursive function consists of two crucial parts:
+
+1. **Base Case (Stopping Condition)**:
+   - The condition under which the function terminates and returns a direct answer without calling itself again.
+   - *Without a base case, recursion runs infinitely until memory is exhausted.*
+2. **Recursive Case**:
+   - The block of code where the function breaks the input down and calls itself with a simpler or smaller argument, moving closer to the base case.
+
+```python
+def recursive_pattern(n):
+    # 1. Base Case
+    if n <= 0:
+        return 0
+
+    # 2. Recursive Case
+    return n + recursive_pattern(n - 1)
 ```
 
 ---
 
-## 3. Setting Up Secure Credentials (App Passwords)
+## 3. Understanding the Call Stack & Unwinding
 
-> ⚠️ **IMPORTANT**: Modern email providers (like Google Gmail) do not permit using your standard account password with basic authentication. You must generate an **App Password**.
+When a function calls itself, Python places a new **stack frame** onto the Call Stack in memory.
 
-### Steps for Gmail:
-1. Go to your **Google Account** settings: [https://myaccount.google.com/](https://myaccount.google.com/)
-2. Navigate to **Security** and enable **2-Step Verification**.
-3. Search for **App passwords** in the search bar.
-4. Name the app (e.g., `Python Email Automation`) and click **Create**.
-5. Copy the 16-character generated password.
-6. Store it securely in your environment variables:
-   ```bash
-   export SENDER_EMAIL="your_email@gmail.com"
-   export SENDER_PASSWORD="your_16_char_app_password"
-   export RECEIVER_EMAIL="target_recipient@example.com"
-   ```
+### Visualizing `factorial(4)`:
+
+```
+[Phase 1: Winding / Pushing onto Call Stack]
+factorial(4) calls 4 * factorial(3)
+    factorial(3) calls 3 * factorial(2)
+        factorial(2) calls 2 * factorial(1)
+            factorial(1) -> BASE CASE REACHED (returns 1)
+
+[Phase 2: Unwinding / Popping off Call Stack]
+            factorial(1) returns 1
+        factorial(2) returns 2 * 1 = 2
+    factorial(3) returns 3 * 2 = 6
+factorial(4) returns 4 * 6 = 24
+```
 
 ---
 
-## 4. Key Python Modules
+## 4. Code Examples & Walkthrough
 
-Python includes everything you need in its **standard library** — no `pip install` required!
+### Example 1: Countdown & Stack Order
+Demonstrates how code executes before the recursive call (winding) versus after it returns (unwinding).
 
-- `smtplib`: Defines an SMTP client session object that can be used to send mail to any Internet machine with an SMTP listener daemon.
-- `ssl`: Creates secure default SSL contexts (`ssl.create_default_context()`).
-- `email.mime.text.MIMEText`: Formats plain text and HTML message bodies.
-- `email.mime.multipart.MIMEMultipart`: Container for complex messages (alternative plain/HTML formats, attachments).
-- `email.mime.base.MIMEBase`: Handles file streams for attachments.
-- `email.encoders`: Encodes binary attachment payloads into Base64 format.
+```python
+def countdown(n):
+    if n <= 0:
+        print("  [Base Case] Blast off!")
+        return
+    print(f"  Entering countdown({n})")
+    countdown(n - 1)
+    print(f"  Unwinding frame for n = {n}")
+```
 
 ---
 
-## 5. Code Examples & Walkthrough
+### Example 2: Factorial of a Number ($n!$)
+Mathematical definition: $n! = n \times (n-1)!$ with $0! = 1$ and $1! = 1$.
 
-### Example 1: Sending Plain Text Email
 ```python
-from email.mime.text import MIMEText
-
-msg = MIMEText("Hello Harish! Welcome to Day 16 of Python.", "plain")
-msg["Subject"] = "Day 16: Python Email Automation"
-msg["From"] = "sender@example.com"
-msg["To"] = "receiver@example.com"
+def factorial(n):
+    if n in (0, 1):
+        return 1
+    return n * factorial(n - 1)
 ```
 
-### Example 2: Sending Rich HTML Formatted Email
-Use `MIMEMultipart("alternative")` to provide both an HTML view and a plain-text fallback:
+---
+
+### Example 3: Sum of First N Natural Numbers
+Sum of numbers from $1$ to $N$: $\text{sum}(N) = N + \text{sum}(N - 1)$.
+
 ```python
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
-msg = MIMEMultipart("alternative")
-msg["Subject"] = "Rich HTML Email"
-msg["From"] = sender
-msg["To"] = receiver
-
-html_content = "<h2>Day 16 of Python</h2><p>Styled with <b>HTML</b>!</p>"
-msg.attach(MIMEText(html_content, "html", "utf-8"))
+def sum_natural(n):
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    return n + sum_natural(n - 1)
 ```
 
-### Example 3: Email with File Attachments
+---
+
+### Example 4: Fibonacci Sequence
+$F(0) = 0$, $F(1) = 1$, $F(n) = F(n-1) + F(n-2)$. Demonstrates branching (multiple) recursion.
+
 ```python
-import os
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-
-msg = MIMEMultipart()
-with open("report.pdf", "rb") as file_handle:
-    part = MIMEBase("application", "octet-stream")
-    part.set_payload(file_handle.read())
-
-encoders.encode_base64(part)
-part.add_header("Content-Disposition", 'attachment; filename="report.pdf"')
-msg.attach(part)
+def fibonacci(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+    return fibonacci(n - 1) + fibonacci(n - 2)
 ```
 
-### Example 4: Sending Bulk Personalized Emails
-```python
-recipients = [
-    {"name": "Alice", "email": "alice@example.com"},
-    {"name": "Bob", "email": "bob@example.com"}
-]
+---
 
-for person in recipients:
-    custom_body = f"Hello {person['name']},\nWelcome to Day 16!"
-    # Send individually to avoid exposing all recipient addresses
+### Example 5: Sum of Digits
+Extracts the last digit using `% 10` and recursively sums the quotient `// 10`.
+
+```python
+def sum_of_digits(n):
+    n = abs(n)
+    if n < 10:
+        return n
+    return (n % 10) + sum_of_digits(n // 10)
 ```
 
-### Example 5: Error Handling & Secure Transmission
-```python
-import smtplib
-import ssl
+---
 
-context = ssl.create_default_context()
+### Example 6: Power Function ($x^n$)
+Calculates $base^{exponent}$ recursively, supporting negative powers as well.
+
+```python
+def power(base, exponent):
+    if exponent == 0:
+        return 1
+    if exponent < 0:
+        return 1 / power(base, -exponent)
+    return base * power(base, exponent - 1)
+```
+
+---
+
+### Example 7: String Reversal & Palindrome Check
+Reverses characters by placing the first character at the end of the reversed substring. Checks palindromes by matching outer characters.
+
+```python
+def reverse_string(s):
+    if len(s) <= 1:
+        return s
+    return reverse_string(s[1:]) + s[0]
+
+def is_palindrome(s):
+    s = "".join(ch.lower() for ch in s if ch.isalnum())
+    if len(s) <= 1:
+        return True
+    if s[0] != s[-1]:
+        return False
+    return is_palindrome(s[1:-1])
+```
+
+---
+
+### Example 8: Recursion Limit & Handling `RecursionError`
+Python prevents stack overflow crashes by capping the maximum recursion depth (default is typically 1000).
+
+```python
+import sys
+
+print("Recursion limit:", sys.getrecursionlimit())
 
 try:
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(sender_email, app_password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-    print("Email sent successfully!")
-except smtplib.SMTPAuthenticationError:
-    print("Authentication failed. Check your App Password.")
-except smtplib.SMTPException as e:
-    print(f"SMTP error occurred: {e}")
+    def infinite(n=1):
+        return infinite(n + 1)
+    infinite()
+except RecursionError as err:
+    print("Caught expected recursion error:", err)
 ```
 
 ---
 
-## 6. Best Practices & Security Rules
+## 5. Recursion vs Iteration (Loops)
 
-1. 🔒 **Never Commit Credentials**: Never hardcode email passwords or sensitive API keys in your repository.
-2. 🔑 **Use App-Specific Passwords**: Always generate and use app passwords with 2FA enabled.
-3. 🛡️ **Always Use TLS/SSL**: Always encrypt your transmission using `ssl.create_default_context()`.
-4. ⏱️ **Rate Limiting**: When sending bulk emails, add delays (`time.sleep`) to prevent being throttled or flagged as spam.
-5. ⚠️ **Validate Email Addresses**: Sanitize recipient inputs before sending.
-6. 🧩 **Exception Handling**: Catch `smtplib.SMTPException`, `socket.error`, and authentication errors gracefully.
+| Feature | Recursion | Iteration (Loops) |
+| :--- | :--- | :--- |
+| **Mechanism** | Function calls itself repeatedly | Repeated block execution (`for`/`while`) |
+| **Termination** | When Base Case is satisfied | When loop condition becomes `False` |
+| **Memory Usage** | High overhead ($O(N)$ stack frames) | Low overhead ($O(1)$ auxiliary memory) |
+| **Execution Speed** | Slower (function call overhead) | Faster |
+| **Best Used For** | Trees, graphs, divide-and-conquer, backtracking | Simple sequences, arrays, counters |
+| **Failure Mode** | `RecursionError` (Stack overflow) | Infinite loop (CPU hang) |
+
+---
+
+## 6. Best Practices for Writing Recursive Functions
+
+1. **Always Define the Base Case First**: Before writing any logic, define when the function must stop.
+2. **Ensure Convergence**: Ensure each recursive step strictly moves the parameter closer to the base case (e.g., `n - 1`, `s[1:]`, `n // 10`).
+3. **Guard Against Invalid Inputs**: Handle negative numbers or unexpected types with sanity checks.
+4. **Be Mindful of Call Stack Depth**: For iterations exceeding 1,000 steps, consider an iterative approach or dynamic programming / memoization.
 
 ---
 
 ## 7. How to Run
 
-### 1. Run in Safe Simulation Mode (Default)
-Run without setting environment variables to inspect the message building and mock transmission:
-```bash
-python day16.py
-```
+Clone the repository and run the script:
 
-### 2. Run with Live Credentials (Optional)
-To send a real email, supply your credentials via environment variables:
 ```bash
-# On Windows (PowerShell):
-$env:SENDER_EMAIL="your_email@gmail.com"
-$env:SENDER_PASSWORD="your-app-password"
-$env:RECEIVER_EMAIL="target_recipient@example.com"
-python day16.py
+# Clone the repository
+git clone https://github.com/harish-0987/DAY-17-OF-PYTHON.git
 
-# On Linux / macOS:
-export SENDER_EMAIL="your_email@gmail.com"
-export SENDER_PASSWORD="your-app-password"
-export RECEIVER_EMAIL="target_recipient@example.com"
-python day16.py
+# Navigate into the project directory
+cd DAY-17-OF-PYTHON
+
+# Run the script
+python day17.py
 ```
 
 ---
 
 ## 8. Summary & Key Takeaways
 
-- Python's standard library provides full email creation and transmission capabilities via `smtplib` and `email.mime`.
-- Port **465** is standard for `SMTP_SSL` and Port **587** is standard for `STARTTLS`.
-- `MIMEMultipart` enables combining plain text, HTML, and file attachments in a single message.
-- Always follow email security protocols: environment variables, TLS encryption, and provider App Passwords.
+- **Recursion** breaks problems into identical smaller subproblems.
+- A **Base Case** is non-negotiable to prevent infinite recursion.
+- Each call consumes memory on the **Call Stack** until the base case begins unwinding.
+- Recursion offers clean, elegant code for naturally hierarchical problems like tree traversals, parsing, and divide-and-conquer algorithms.
 
 ---
-⭐ *Day 16 of the Python series completed!*
+
+⭐ **Star this repository** if you find this helpful on your Python learning journey!
