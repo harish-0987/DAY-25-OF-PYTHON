@@ -1,30 +1,29 @@
-# Day 21: File Handling in Python (Basic Level) 📁🐍
+# Day 22: Pattern Problems & Logic Building in Python 🌟📐
 
 > **Motto**: *"Not here to be known, here to build."*  
 > **Author**: Harish  
-> **Repository**: [DAY-21-OF-PYTHON](https://github.com/harish-0987/DAY-21-OF-PYTHON)
+> **Repository**: [DAY-22-OF-PYTHON](https://github.com/harish-0987/DAY-22-OF-PYTHON)
 
-Welcome to **Day 21 of Python**! Today's focus is on **File Handling in Python (Basic Level)**.
+Welcome to **Day 22 of Python**! Today's focus is on **Mastering Pattern Problems & Logic Building** in Python.
 
-In programming, variables and data stored in memory are volatile—they disappear once program execution finishes. File handling bridges this gap by allowing programs to persist, retrieve, update, and manage data stored permanently on secondary storage disks.
+Pattern printing is one of the most foundational and frequently tested problem-solving domains in software engineering, technical coding rounds, and competitive programming. Beyond visual printing, it develops your intuition for **nested loops**, **coordinate geometry in 2D space**, **arithmetic progressions**, and **symmetrical problem decomposition**.
 
 ---
 
 ## 📌 Table of Contents
 
 1. [Overview & Learning Objectives](#-overview--learning-objectives)
-2. [What is File Handling?](#-what-is-file-handling)
-3. [The File Lifecycle](#-the-file-lifecycle)
-4. [File Opening Modes Comparison](#-file-opening-modes-comparison)
-5. [Key Operations](#-key-operations)
-   - [1. Writing to Files (`w` and `writelines`)](#1-writing-to-files-w-and-writelines)
-   - [2. Reading from Files (`read`, `readline`, `readlines`, and loops)](#2-reading-from-files-read-readline-readlines-and-loops)
-   - [3. Appending to Files (`a` mode)](#3-appending-to-files-a-mode)
-   - [4. The `with` Statement (Context Manager)](#4-the-with-statement-context-manager)
-   - [5. File Pointer Navigation (`tell` & `seek`)](#5-file-pointer-navigation-tell--seek)
-   - [6. Safe File Handling with `try...except`](#6-safe-file-handling-with-tryexcept)
-   - [7. Practical Mini-Project: File Analyzer](#7-practical-mini-project-file-analyzer)
-6. [Best Practices](#-best-practices)
+2. [The Universal 4-Step Pattern Formula](#-the-universal-4-step-pattern-formula)
+3. [Pattern Categories & Implementations](#-pattern-categories--implementations)
+   - [Category 1: Basic Star Patterns](#category-1-basic-star-patterns)
+   - [Category 2: Pyramids, Diamonds & Symmetrical Patterns](#category-2-pyramids-diamonds--symmetrical-patterns)
+   - [Category 3: Number & Binary Patterns](#category-3-number--binary-patterns)
+   - [Category 4: Character & Alphabet Patterns](#category-4-character--alphabet-patterns)
+   - [Category 5: Hollow & Boundary Patterns](#category-5-hollow--boundary-patterns)
+   - [Category 6: Advanced Matrix & Mathematical Patterns](#category-6-advanced-matrix--mathematical-patterns)
+4. [Master Formula Reference Sheet](#-master-formula-reference-sheet)
+5. [Complexity Analysis](#-complexity-analysis)
+6. [Top Interview Tips for Pattern Problems](#-top-interview-tips-for-pattern-problems)
 7. [How to Run the Code](#-how-to-run-the-code)
 8. [Summary & Takeaways](#-summary--takeaways)
 
@@ -32,193 +31,436 @@ In programming, variables and data stored in memory are volatile—they disappea
 
 ## 🎯 Overview & Learning Objectives
 
-By completing Day 21, you will understand:
-- Why data persistence matters and how files work in Python.
-- How to open, read, write, append, and close files.
-- The differences between file modes (`'r'`, `'w'`, `'a'`, `'x'`, text vs. binary).
-- Why the `with` statement (Context Manager) is the gold standard for file handling.
-- How to navigate the internal file pointer using `tell()` and `seek()`.
-- How to handle `FileNotFoundError` and `IOError` gracefully to prevent crashes.
+By completing Day 22, you will understand:
+- How to systematically break down any visual grid into mathematical relations between row index `i` and column index `j`.
+- How to calculate leading whitespace and trailing symmetric elements cleanly.
+- How to manipulate ASCII characters (`ord()` and `chr()`) for dynamic letter patterns.
+- How to generate mathematical structures like **Pascal's Triangle** and **Concentric Distance Matrix** ($2n - 1 \times 2n - 1$).
+- How to write clean, modular, and reusable Python functions.
 
 ---
 
-## 📂 What is File Handling?
+## 💡 The Universal 4-Step Pattern Formula
 
-File handling refers to reading data from files or saving data into files stored on your hard drive, SSD, or external storage.
-
-- **Volatile Storage (RAM)**: Variables, lists, and objects live here while the script runs; destroyed when the program stops.
-- **Non-Volatile Storage (Disk)**: Files (`.txt`, `.csv`, `.json`, `.log`) persist permanently across program executions, reboots, and systems.
-
----
-
-## 🔄 The File Lifecycle
-
-Every file operation in Python follows a 3-step lifecycle:
+Every 2D pattern can be decoded using this exact 4-step framework:
 
 ```
-┌─────────────┐       ┌────────────────────────┐       ┌─────────────┐
-│ 1. OPEN     │ ────> │ 2. OPERATE             │ ────> │ 3. CLOSE    │
-│ open(file)  │       │ read() / write() / app │       │ close()     │
-└─────────────┘       └────────────────────────┘       └─────────────┘
-```
-
-> **Note**: Forgetting to close files can cause resource leaks and locked files. Modern Python solves this automatically with the `with` statement.
-
----
-
-## 📊 File Opening Modes Comparison
-
-| Mode | Name | Description | If File Does NOT Exist | If File Already Exists |
-| :---: | :---: | :--- | :---: | :---: |
-| `'r'` | **Read** | Default mode. Opens file for reading only. | Raises `FileNotFoundError` | Reads from beginning |
-| `'w'` | **Write** | Opens file for writing. | Creates a new file | **Truncates (erases)** content |
-| `'a'` | **Append** | Opens file for writing at the end. | Creates a new file | Keeps content & appends |
-| `'x'` | **Exclusive** | Creates a new file for writing. | Creates a new file | Raises `FileExistsError` |
-| `'r+'`| **Read/Write** | Opens file for both reading and writing. | Raises `FileNotFoundError` | Pointer at beginning |
-| `'t'` | **Text** | Default text format (strings). | - | - |
-| `'b'` | **Binary** | Raw byte format (images, audio, etc.). | - | - |
-
----
-
-## 🛠️ Key Operations
-
-### 1. Writing to Files (`w` and `writelines`)
-
-- `file.write(str)` writes a single string into the file.
-- `file.writelines(list)` writes a sequence of strings (does not automatically append newline `\n`).
-
-```python
-# Writing initial text
-file = open("notes.txt", "w", encoding="utf-8")
-file.write("Hello, World!\n")
-file.writelines(["First line\n", "Second line\n"])
-file.close()
+┌───────────────────────────────────────────────────────────────┐
+│ STEP 1: OUTER LOOP (Rows)                                     │
+│ How many total lines are there? range(n) or range(1, n+1)     │
+└───────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+┌───────────────────────────────────────────────────────────────┐
+│ STEP 2: INNER LOOP 1 (Leading Spaces)                         │
+│ Is the pattern right-aligned or centered? Compute space count │
+└───────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+┌───────────────────────────────────────────────────────────────┐
+│ STEP 3: INNER LOOP 2 (Characters / Stars / Numbers)           │
+│ What is printed on row i? Count = f(i), Value = g(i, j)       │
+└───────────────────────────────┬───────────────────────────────┘
+                                │
+                                ▼
+┌───────────────────────────────────────────────────────────────┐
+│ STEP 4: SYMMETRY / MIRRORING (If applicable)                  │
+│ For diamonds & butterflies: split into top half & bottom half │
+└───────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-### 2. Reading from Files (`read`, `readline`, `readlines`, and loops)
+## 🛠️ Pattern Categories & Implementations
 
-Python offers four flexible techniques to read content:
+### Category 1: Basic Star Patterns
 
-1. **`file.read()`**: Reads entire file content as a single string.
-2. **`file.read(N)`**: Reads up to `N` characters/bytes.
-3. **`file.readline()`**: Reads one line at a time.
-4. **`file.readlines()`**: Reads all lines into a Python `list` of strings.
-5. **Direct iteration (`for line in file:`)**: **Recommended for large files** because it streams lines into memory without loading the entire file at once.
+#### 1. Solid Square
+```
+* * * * *
+* * * * *
+* * * * *
+* * * * *
+* * * * *
+```
+- **Formula**: $n$ rows, each row has $n$ stars.
+- **Code snippet**:
+  ```python
+  for i in range(n):
+      print("* " * n)
+  ```
 
-```python
-with open("notes.txt", "r", encoding="utf-8") as f:
-    for line in f:
-        print(line.strip())
+#### 2. Right-Angled Triangle (Left Aligned)
+```
+*
+* *
+* * *
+* * * *
+* * * * *
+```
+- **Formula**: Row $i$ ($1$-indexed) prints $i$ stars.
+- **Code snippet**:
+  ```python
+  for i in range(1, n + 1):
+      print("* " * i)
+  ```
+
+#### 3. Inverted Right-Angled Triangle
+```
+* * * * *
+* * * *
+* * *
+* *
+*
+```
+- **Formula**: Row $i$ starts from $n$ stars and decrements down to $1$.
+- **Code snippet**:
+  ```python
+  for i in range(n, 0, -1):
+      print("* " * i)
+  ```
+
+#### 4. Mirrored Right-Angled Triangle (Right Aligned)
+```
+        *
+      * *
+    * * *
+  * * * *
+* * * * *
+```
+- **Formula**: Leading spaces = $2 \times (n - i)$, Stars = $i$.
+
+#### 5. Inverted Mirrored Right Triangle
+```
+* * * * *
+  * * * *
+    * * *
+      * *
+        *
+```
+- **Formula**: Leading spaces = $2 \times i$, Stars = $n - i$.
+
+---
+
+### Category 2: Pyramids, Diamonds & Symmetrical Patterns
+
+#### 6. Full Star Pyramid
+```
+    *
+   ***
+  *****
+ *******
+*********
+```
+- **Formula**: Spaces = $n - i$, Stars = $2i - 1$.
+- **Code snippet**:
+  ```python
+  for i in range(1, n + 1):
+      print(" " * (n - i) + "*" * (2 * i - 1))
+  ```
+
+#### 7. Inverted Star Pyramid
+```
+*********
+ *******
+  *****
+   ***
+    *
+```
+- **Formula**: Spaces = $n - i$, Stars = $2i - 1$ where $i$ counts down from $n$ to $1$.
+
+#### 8. Solid Diamond
+```
+    *
+   ***
+  *****
+ *******
+*********
+ *******
+  *****
+   ***
+    *
+```
+- **Formula**: Top upright pyramid ($1 \dots n$) + Bottom inverted pyramid ($n-1 \dots 1$).
+
+#### 9. Half Diamond (Sideways Pyramid)
+```
+*
+* *
+* * *
+* * * *
+* * * * *
+* * * *
+* * *
+* *
+*
+```
+- **Formula**: Total rows = $2n - 1$. For row $i$, `stars = i if i <= n else 2*n - i`.
+
+#### 10. Hourglass Pattern
+```
+*********
+ *******
+  *****
+   ***
+    *
+   ***
+  *****
+ *******
+*********
+```
+
+#### 11. Butterfly Pattern
+```
+*                 *
+* *             * *
+* * *         * * *
+* * * *     * * * *
+* * * * * * * * * *
+* * * *     * * * *
+* * *         * * *
+* *             * *
+*                 *
+```
+- **Formula**: Left stars = $i$, Middle spaces = $2 \times (n - i)$, Right stars = $i$. Mirror for bottom half.
+
+---
+
+### Category 3: Number & Binary Patterns
+
+#### 12. Same Number Triangle
+```
+1
+2 2
+3 3 3
+4 4 4 4
+5 5 5 5 5
+```
+
+#### 13. Increasing Number Triangle
+```
+1
+1 2
+1 2 3
+1 2 3 4
+1 2 3 4 5
+```
+
+#### 14. Floyd's Triangle
+```
+1
+2 3
+4 5 6
+7 8 9 10
+11 12 13 14 15
+```
+- **Logic**: Maintain a running accumulator counter `current = 1`, incrementing on each printed cell.
+
+#### 15. Binary Alternating (0-1) Triangle
+```
+1
+0 1
+1 0 1
+0 1 0 1
+1 0 1 0 1
+```
+- **Formula**: If `(row + col) % 2 == 0` print `1`, else `0`. Or flip state with `start = 1 - start`.
+
+#### 16. Palindromic Number Pyramid
+```
+    1
+   121
+  12321
+ 1234321
+123454321
+```
+- **Formula**: Ascending numbers from $1$ to $i$, then descending from $i-1$ down to $1$.
+
+#### 17. Number Crown / Valley Pattern
+```
+1                 1
+1 2             2 1
+1 2 3         3 2 1
+1 2 3 4     4 3 2 1
+1 2 3 4 5 5 4 3 2 1
+```
+- **Formula**: Left numbers $1 \dots i$, middle spaces $2 \times (n - i)$, right numbers $i \dots 1$.
+
+---
+
+### Category 4: Character & Alphabet Patterns
+
+Using `chr(65 + index)` where `65` is ASCII for `'A'`.
+
+#### 18. Increasing Alphabet Triangle
+```
+A
+A B
+A B C
+A B C D
+A B C D E
+```
+
+#### 19. Same Alphabet Triangle
+```
+A
+B B
+C C C
+D D D D
+E E E E E
+```
+
+#### 20. Alphabet Palindromic Pyramid
+```
+    A
+   ABA
+  ABCBA
+ ABCDCBA
+ABCDEDCBA
+```
+
+#### 21. Reverse Letter Triangle
+```
+E
+D E
+C D E
+B C D E
+A B C D E
+```
+- **Formula**: Start char on row $i$ is `65 + (n - 1 - i)`.
+
+---
+
+### Category 5: Hollow & Boundary Patterns
+
+In hollow patterns, stars are printed **only on boundaries**:
+- First row / Last row
+- First column / Last column
+- Inner cells contain whitespace.
+
+#### 22. Hollow Square
+```
+* * * * *
+*       *
+*       *
+*       *
+* * * * *
+```
+
+#### 23. Hollow Pyramid
+```
+    *
+   * *
+  *   *
+ *     *
+*********
+```
+- **Formula**: Row $1$ has $1$ star; Row $n$ is filled with stars; Middle rows have $1$ star, $(2i - 3)$ spaces, and $1$ star.
+
+#### 24. Hollow Diamond
+```
+    *
+   * *
+  *   *
+ *     *
+  *   *
+   * *
+    *
 ```
 
 ---
 
-### 3. Appending to Files (`a` mode)
+### Category 6: Advanced Matrix & Mathematical Patterns
 
-When you want to record logs, add new user records, or save results without erasing existing data, use append mode `'a'`.
-
-```python
-with open("activity.log", "a", encoding="utf-8") as log:
-    log.write("[INFO] User authenticated successfully.\n")
+#### 25. Pascal's Triangle
 ```
-
----
-
-### 4. The `with` Statement (Context Manager)
-
-The modern Python standard for opening files:
-
-```python
-with open("data.txt", "r", encoding="utf-8") as file:
-    content = file.read()
-# The file is GUARANTEED to be closed here, even if an exception was raised!
+    1
+   1 1
+  1 2 1
+ 1 3 3 1
+1 4 6 4 1
 ```
+- **Formula**: Every element is $C(n, k) = \frac{n!}{k!(n-k)!}$ or computed additively via `row[j] = prev[j-1] + prev[j]`.
 
-**Why it matters:**
-- Automatically invokes `__enter__()` when entering and `__exit__()` when leaving.
-- Frees file descriptors and operating system handles immediately.
-- Eliminates manual `file.close()` calls.
-
----
-
-### 5. File Pointer Navigation (`tell` & `seek`)
-
-The file pointer acts as a cursor indicating where the next read or write will occur.
-
-- `file.tell()`: Returns an integer representing the current byte offset of the pointer.
-- `file.seek(offset)`: Relocates the pointer to the specified position (`seek(0)` resets to the beginning).
-
-```python
-with open("notes.txt", "r", encoding="utf-8") as f:
-    print(f.tell())       # 0 (at start)
-    chunk = f.read(10)
-    print(f.tell())       # 10
-    f.seek(0)             # Rewind back to start
-    print(f.read(10))     # Re-reads first 10 characters
+#### 26. Concentric Square Number Matrix (FAANG Interview Classic)
+For $n = 4$, matrix size is $(2n - 1) \times (2n - 1) = 7 \times 7$:
 ```
-
----
-
-### 6. Safe File Handling with `try...except`
-
-Handle missing or inaccessible files gracefully without crashing your software:
-
-```python
-try:
-    with open("config.json", "r", encoding="utf-8") as f:
-        data = f.read()
-except FileNotFoundError:
-    print("Configuration file was not found. Initializing with defaults.")
-except IOError as err:
-    print(f"I/O error encountered: {err}")
+4 4 4 4 4 4 4
+4 3 3 3 3 3 4
+4 3 2 2 2 3 4
+4 3 2 1 2 3 4
+4 3 2 2 2 3 4
+4 3 3 3 3 3 4
+4 4 4 4 4 4 4
 ```
+- **Core Formula**:
+  $$\text{value}(i, j) = n - \min(\text{top}, \text{left}, \text{bottom}, \text{right})$$
+  Where:
+  - $\text{top} = i$
+  - $\text{left} = j$
+  - $\text{bottom} = (2n - 2) - i$
+  - $\text{right} = (2n - 2) - j$
 
 ---
 
-### 7. Practical Mini-Project: File Analyzer
+## 📊 Master Formula Reference Sheet
 
-In `day21.py`, we implement a simple file analyzer utility that reads any text file and reports:
-- Number of lines
-- Number of words
-- Total character count
-
----
-
-## 🌟 Best Practices
-
-1. **Always use `with` blocks**: Prevents leaks and dangling open file descriptors.
-2. **Explicitly specify `encoding="utf-8"`**: Guarantees cross-platform consistency between Windows, macOS, and Linux.
-3. **Stream large files**: Use `for line in file:` instead of `file.read()` or `file.readlines()` when dealing with large files (GBs).
-4. **Be cautious with `'w'` mode**: Remember that `'w'` mode will completely wipe out any existing content in the file without asking for confirmation.
-5. **Always catch `FileNotFoundError`**: When reading files created outside your script or based on user input.
+| Pattern Type | Rows | Leading Spaces | Symbols / Elements | Key Formula |
+| :--- | :---: | :---: | :---: | :--- |
+| **Right Triangle** | $n$ | $0$ | $i$ stars | `* * i` |
+| **Inverted Triangle** | $n$ | $0$ | $n - i + 1$ stars | `* * (n - i)` |
+| **Full Pyramid** | $n$ | $n - i$ | $2i - 1$ stars | `" "*(n-i) + "*"*(2*i-1)` |
+| **Diamond** | $2n - 1$ | $|n - i|$ | $2(n - |n - i|) - 1$ | Combined Upright + Inverted |
+| **Floyd's Triangle** | $n$ | $0$ | $i$ numbers | `current += 1` |
+| **Binary Triangle** | $n$ | $0$ | $i$ bits | `(i + j) % 2` or `1 - state` |
+| **Palindromic Pyramid** | $n$ | $n - i$ | $1 \to i \to 1$ | Ascending + Descending loops |
+| **Hollow Pyramid** | $n$ | $n - i$ | Boundary stars | Inner spaces $= 2i - 3$ |
+| **Concentric Square** | $2n - 1$ | $0$ | $(2n - 1)$ per row | $n - \min(\text{distances})$ |
 
 ---
 
-## 🚀 How to Run the Code
+## ⚡ Complexity Analysis
 
-Run the Day 21 script directly using Python:
+- **Time Complexity**:
+  - Most 2D patterns iterate over $n$ rows and up to $O(n)$ columns per row.
+  - Overall Time Complexity: $\mathcal{O}(n^2)$
+  - Concentric Matrix: $\mathcal{O}((2n)^2) = \mathcal{O}(n^2)$
+- **Space Complexity**:
+  - If printed line-by-line: $\mathcal{O}(1)$ auxiliary space (excluding string output buffers).
+  - If stored in memory (Pascal triangle / grid): $\mathcal{O}(n^2)$ space.
+
+---
+
+## 💡 Top Interview Tips for Pattern Problems
+
+1. **Draw a Grid**: Always sketch an index table on paper showing row index $i$ against column index $j$.
+2. **Tabulate Relationships**: Create columns for:
+   - Row $i$
+   - Number of leading spaces
+   - Number of symbols/digits
+   - Value of symbols
+3. **Spot Linearity**: Notice if the counts form an Arithmetic Progression (e.g., $1, 3, 5, 7 \implies 2i - 1$).
+4. **Leverage String Multiplication**: In Python, `" " * k` and `"* " * k` make pattern printing significantly cleaner than nested manual loops.
+5. **Handle Symmetries Separately**: Don't try to solve complex diamonds or butterflies in a single convoluted loop—split them into top and bottom halves.
+
+---
+
+## 💻 How to Run the Code
+
+Run the master script directly using Python:
 
 ```bash
-python day21.py
+python day22.py
 ```
 
-All demonstrations run in a self-contained manner and clean up any temporary demo files created during execution.
+All 28 pattern problems across all categories will run sequentially with clean headers and visual outputs in your terminal!
 
 ---
 
-## 📌 Summary & Takeaways
+## 🚀 Summary & Takeaways
 
-| Concept | Key Syntax | Benefit |
-| :--- | :--- | :--- |
-| **Open File** | `with open(filename, mode, encoding="utf-8") as f:` | Clean, safe, resource-friendly |
-| **Write** | `f.write("text\n")` | Saves text to disk |
-| **Read All** | `content = f.read()` | Retrieves entire file |
-| **Read Line-by-Line**| `for line in f:` | Memory-efficient streaming |
-| **Append** | `open(filename, 'a')` | Adds data without overwriting |
-| **Position** | `f.tell()` / `f.seek(0)` | Inspects and resets reading cursor |
+- You now possess an intuitive mental blueprint to decompose and code any 2D pattern question.
+- Mastered loop bounds, space calculations, ASCII character conversions, palindromes, and 2D distance transforms.
+- Built a reusable reference implementation for technical interview preparation.
 
----
-
-*Keep building every day. See you in Day 22!*
+*"Not here to be known, here to build."*
