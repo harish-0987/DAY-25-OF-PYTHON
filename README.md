@@ -1,466 +1,226 @@
-# Day 22: Pattern Problems & Logic Building in Python 🌟📐
+# Day 23: Object-Oriented Programming (OOP) in Python - Introduction & Basics 🧱🐍
 
 > **Motto**: *"Not here to be known, here to build."*  
 > **Author**: Harish  
-> **Repository**: [DAY-22-OF-PYTHON](https://github.com/harish-0987/DAY-22-OF-PYTHON)
+> **Repository**: [DAY-23-OF-PYTHON](https://github.com/harish-0987/DAY-23-OF-PYTHON)
 
-Welcome to **Day 22 of Python**! Today's focus is on **Mastering Pattern Problems & Logic Building** in Python.
+Welcome to **Day 23 of Python**! Today's session is an introductory dive into **Object-Oriented Programming (OOP)** in Python, focused on mastering the core foundation in a concise, practical, and short format.
 
-Pattern printing is one of the most foundational and frequently tested problem-solving domains in software engineering, technical coding rounds, and competitive programming. Beyond visual printing, it develops your intuition for **nested loops**, **coordinate geometry in 2D space**, **arithmetic progressions**, and **symmetrical problem decomposition**.
+> [!NOTE]
+> **Scope for Today**: We focus strictly on the fundamental building blocks of OOP: **Classes, Objects, Attributes, Methods, `__init__`, and `self`**.  
+> The **Four Pillars of OOP** (*Encapsulation, Inheritance, Polymorphism, Abstraction*) will be explored in depth in **Day 24**.
 
 ---
 
 ## 📌 Table of Contents
 
-1. [Overview & Learning Objectives](#-overview--learning-objectives)
-2. [The Universal 4-Step Pattern Formula](#-the-universal-4-step-pattern-formula)
-3. [Pattern Categories & Implementations](#-pattern-categories--implementations)
-   - [Category 1: Basic Star Patterns](#category-1-basic-star-patterns)
-   - [Category 2: Pyramids, Diamonds & Symmetrical Patterns](#category-2-pyramids-diamonds--symmetrical-patterns)
-   - [Category 3: Number & Binary Patterns](#category-3-number--binary-patterns)
-   - [Category 4: Character & Alphabet Patterns](#category-4-character--alphabet-patterns)
-   - [Category 5: Hollow & Boundary Patterns](#category-5-hollow--boundary-patterns)
-   - [Category 6: Advanced Matrix & Mathematical Patterns](#category-6-advanced-matrix--mathematical-patterns)
-4. [Master Formula Reference Sheet](#-master-formula-reference-sheet)
-5. [Complexity Analysis](#-complexity-analysis)
-6. [Top Interview Tips for Pattern Problems](#-top-interview-tips-for-pattern-problems)
-7. [How to Run the Code](#-how-to-run-the-code)
-8. [Summary & Takeaways](#-summary--takeaways)
+1. [What is OOP? (Short Format)](#-what-is-oop-short-format)
+2. [Procedural vs Object-Oriented Programming](#-procedural-vs-object-oriented-programming)
+3. [Core Building Blocks](#-core-building-blocks)
+   - [1. Class](#1-class)
+   - [2. Object](#2-object)
+   - [3. The `__init__()` Constructor & `self`](#3-the-__init__-constructor--self)
+   - [4. Attributes: Class vs Instance](#4-attributes-class-vs-instance)
+   - [5. Methods (Behaviors)](#5-methods-behaviors)
+4. [Built-in Object Inspection Tools](#-built-in-object-inspection-tools)
+5. [Preview: The Four Pillars of OOP (Coming Day 24)](#-preview-the-four-pillars-of-oop-coming-day-24)
+6. [Code Implementation & Running the Code](#-code-implementation--running-the-code)
+7. [Summary & Key Takeaways](#-summary--key-takeaways)
 
 ---
 
-## 🎯 Overview & Learning Objectives
+## 💡 What is OOP? (Short Format)
 
-By completing Day 22, you will understand:
-- How to systematically break down any visual grid into mathematical relations between row index `i` and column index `j`.
-- How to calculate leading whitespace and trailing symmetric elements cleanly.
-- How to manipulate ASCII characters (`ord()` and `chr()`) for dynamic letter patterns.
-- How to generate mathematical structures like **Pascal's Triangle** and **Concentric Distance Matrix** ($2n - 1 \times 2n - 1$).
-- How to write clean, modular, and reusable Python functions.
+**Object-Oriented Programming (OOP)** is a programming paradigm organized around **objects** rather than actions or logic alone.
 
----
-
-## 💡 The Universal 4-Step Pattern Formula
-
-Every 2D pattern can be decoded using this exact 4-step framework:
+An **object** is a self-contained unit that bundles:
+- **State / Data**: Represented by **Attributes** (variables).
+- **Behavior / Action**: Represented by **Methods** (functions).
 
 ```
-┌───────────────────────────────────────────────────────────────┐
-│ STEP 1: OUTER LOOP (Rows)                                     │
-│ How many total lines are there? range(n) or range(1, n+1)     │
-└───────────────────────────────┬───────────────────────────────┘
-                                │
-                                ▼
-┌───────────────────────────────────────────────────────────────┐
-│ STEP 2: INNER LOOP 1 (Leading Spaces)                         │
-│ Is the pattern right-aligned or centered? Compute space count │
-└───────────────────────────────┬───────────────────────────────┘
-                                │
-                                ▼
-┌───────────────────────────────────────────────────────────────┐
-│ STEP 3: INNER LOOP 2 (Characters / Stars / Numbers)           │
-│ What is printed on row i? Count = f(i), Value = g(i, j)       │
-└───────────────────────────────┬───────────────────────────────┘
-                                │
-                                ▼
-┌───────────────────────────────────────────────────────────────┐
-│ STEP 4: SYMMETRY / MIRRORING (If applicable)                  │
-│ For diamonds & butterflies: split into top half & bottom half │
-└───────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│                        OBJECT                          │
+│                                                        │
+│   ┌──────────────────────┐    ┌────────────────────┐   │
+│   │   ATTRIBUTES (Data)  │    │  METHODS (Actions) │   │
+│   │   • name = "Harish"  │    │  • introduce()     │   │
+│   │   • roll_no = 101    │    │  • study()         │   │
+│   └──────────────────────┘    └────────────────────┘   │
+└────────────────────────────────────────────────────────┘
 ```
+
+### Why Use OOP?
+- **Real-World Modeling**: Entities in software mirror physical or conceptual objects (User, Car, Account, Order).
+- **Modularity & Organization**: Code is separated into clean, distinct, self-contained components.
+- **Reusability**: Define a class once and instantiate infinite distinct objects.
+- **Maintainability**: Makes large applications much easier to debug, test, and scale.
 
 ---
 
-## 🛠️ Pattern Categories & Implementations
+## ⚖️ Procedural vs Object-Oriented Programming
 
-### Category 1: Basic Star Patterns
-
-#### 1. Solid Square
-```
-* * * * *
-* * * * *
-* * * * *
-* * * * *
-* * * * *
-```
-- **Formula**: $n$ rows, each row has $n$ stars.
-- **Code snippet**:
-  ```python
-  for i in range(n):
-      print("* " * n)
-  ```
-
-#### 2. Right-Angled Triangle (Left Aligned)
-```
-*
-* *
-* * *
-* * * *
-* * * * *
-```
-- **Formula**: Row $i$ ($1$-indexed) prints $i$ stars.
-- **Code snippet**:
-  ```python
-  for i in range(1, n + 1):
-      print("* " * i)
-  ```
-
-#### 3. Inverted Right-Angled Triangle
-```
-* * * * *
-* * * *
-* * *
-* *
-*
-```
-- **Formula**: Row $i$ starts from $n$ stars and decrements down to $1$.
-- **Code snippet**:
-  ```python
-  for i in range(n, 0, -1):
-      print("* " * i)
-  ```
-
-#### 4. Mirrored Right-Angled Triangle (Right Aligned)
-```
-        *
-      * *
-    * * *
-  * * * *
-* * * * *
-```
-- **Formula**: Leading spaces = $2 \times (n - i)$, Stars = $i$.
-
-#### 5. Inverted Mirrored Right Triangle
-```
-* * * * *
-  * * * *
-    * * *
-      * *
-        *
-```
-- **Formula**: Leading spaces = $2 \times i$, Stars = $n - i$.
+| Feature | Procedural Programming | Object-Oriented Programming (OOP) |
+| :--- | :--- | :--- |
+| **Primary Unit** | Functions / Procedures | Classes & Objects |
+| **Data & Logic** | Data and functions are separate | Data and functions are bundled together |
+| **Focus** | How to do things (Step-by-step) | What entities exist and how they interact |
+| **Real-World Mapping** | Abstract & algorithmic | Intuitive and directly models real entities |
+| **Reusability** | Through standalone functions | Through objects and classes |
 
 ---
 
-### Category 2: Pyramids, Diamonds & Symmetrical Patterns
+## 🧱 Core Building Blocks
 
-#### 6. Full Star Pyramid
-```
-    *
-   ***
-  *****
- *******
-*********
-```
-- **Formula**: Spaces = $n - i$, Stars = $2i - 1$.
-- **Code snippet**:
-  ```python
-  for i in range(1, n + 1):
-      print(" " * (n - i) + "*" * (2 * i - 1))
-  ```
+### 1. Class
+A **Class** is a blueprint or template for creating objects. It defines what attributes and behaviors the objects created from it will possess.
 
-#### 7. Inverted Star Pyramid
-```
-*********
- *******
-  *****
-   ***
-    *
-```
-- **Formula**: Spaces = $n - i$, Stars = $2i - 1$ where $i$ counts down from $n$ to $1$.
-
-#### 8. Solid Diamond
-```
-    *
-   ***
-  *****
- *******
-*********
- *******
-  *****
-   ***
-    *
-```
-- **Formula**: Top upright pyramid ($1 \dots n$) + Bottom inverted pyramid ($n-1 \dots 1$).
-
-#### 9. Half Diamond (Sideways Pyramid)
-```
-*
-* *
-* * *
-* * * *
-* * * * *
-* * * *
-* * *
-* *
-*
-```
-- **Formula**: Total rows = $2n - 1$. For row $i$, `stars = i if i <= n else 2*n - i`.
-
-#### 10. Hourglass Pattern
-```
-*********
- *******
-  *****
-   ***
-    *
-   ***
-  *****
- *******
-*********
+```python
+class SimpleCar:
+    """Blueprint for creating cars."""
+    pass
 ```
 
-#### 11. Butterfly Pattern
-```
-*                 *
-* *             * *
-* * *         * * *
-* * * *     * * * *
-* * * * * * * * * *
-* * * *     * * * *
-* * *         * * *
-* *             * *
-*                 *
-```
-- **Formula**: Left stars = $i$, Middle spaces = $2 \times (n - i)$, Right stars = $i$. Mirror for bottom half.
+### 2. Object
+An **Object** is a concrete instance of a class loaded into memory with its own identity.
 
----
+```python
+car1 = SimpleCar()
+car2 = SimpleCar()
 
-### Category 3: Number & Binary Patterns
-
-#### 12. Same Number Triangle
-```
-1
-2 2
-3 3 3
-4 4 4 4
-5 5 5 5 5
-```
-
-#### 13. Increasing Number Triangle
-```
-1
-1 2
-1 2 3
-1 2 3 4
-1 2 3 4 5
-```
-
-#### 14. Floyd's Triangle
-```
-1
-2 3
-4 5 6
-7 8 9 10
-11 12 13 14 15
-```
-- **Logic**: Maintain a running accumulator counter `current = 1`, incrementing on each printed cell.
-
-#### 15. Binary Alternating (0-1) Triangle
-```
-1
-0 1
-1 0 1
-0 1 0 1
-1 0 1 0 1
-```
-- **Formula**: If `(row + col) % 2 == 0` print `1`, else `0`. Or flip state with `start = 1 - start`.
-
-#### 16. Palindromic Number Pyramid
-```
-    1
-   121
-  12321
- 1234321
-123454321
-```
-- **Formula**: Ascending numbers from $1$ to $i$, then descending from $i-1$ down to $1$.
-
-#### 17. Number Crown / Valley Pattern
-```
-1                 1
-1 2             2 1
-1 2 3         3 2 1
-1 2 3 4     4 3 2 1
-1 2 3 4 5 5 4 3 2 1
-```
-- **Formula**: Left numbers $1 \dots i$, middle spaces $2 \times (n - i)$, right numbers $i \dots 1$.
-
----
-
-### Category 4: Character & Alphabet Patterns
-
-Using `chr(65 + index)` where `65` is ASCII for `'A'`.
-
-#### 18. Increasing Alphabet Triangle
-```
-A
-A B
-A B C
-A B C D
-A B C D E
-```
-
-#### 19. Same Alphabet Triangle
-```
-A
-B B
-C C C
-D D D D
-E E E E E
-```
-
-#### 20. Alphabet Palindromic Pyramid
-```
-    A
-   ABA
-  ABCBA
- ABCDCBA
-ABCDEDCBA
-```
-
-#### 21. Reverse Letter Triangle
-```
-E
-D E
-C D E
-B C D E
-A B C D E
-```
-- **Formula**: Start char on row $i$ is `65 + (n - 1 - i)`.
-
----
-
-### Category 5: Hollow & Boundary Patterns
-
-In hollow patterns, stars are printed **only on boundaries**:
-- First row / Last row
-- First column / Last column
-- Inner cells contain whitespace.
-
-#### 22. Hollow Square
-```
-* * * * *
-*       *
-*       *
-*       *
-* * * * *
-```
-
-#### 23. Hollow Pyramid
-```
-    *
-   * *
-  *   *
- *     *
-*********
-```
-- **Formula**: Row $1$ has $1$ star; Row $n$ is filled with stars; Middle rows have $1$ star, $(2i - 3)$ spaces, and $1$ star.
-
-#### 24. Hollow Diamond
-```
-    *
-   * *
-  *   *
- *     *
-  *   *
-   * *
-    *
+print(car1 is not car2)  # True (two distinct objects in memory)
 ```
 
 ---
 
-### Category 6: Advanced Matrix & Mathematical Patterns
+### 3. The `__init__()` Constructor & `self`
 
-#### 25. Pascal's Triangle
-```
-    1
-   1 1
-  1 2 1
- 1 3 3 1
-1 4 6 4 1
-```
-- **Formula**: Every element is $C(n, k) = \frac{n!}{k!(n-k)!}$ or computed additively via `row[j] = prev[j-1] + prev[j]`.
+- **`__init__()`**: A special dunder (double underscore) method automatically executed when an object is instantiated. It initializes the object's initial state.
+- **`self`**: A reference to the current instance of the class. It allows each object to access and modify its own attributes and methods.
 
-#### 26. Concentric Square Number Matrix (FAANG Interview Classic)
-For $n = 4$, matrix size is $(2n - 1) \times (2n - 1) = 7 \times 7$:
+```python
+class Student:
+    def __init__(self, name: str, roll_no: int, course: str):
+        self.name = name          # Instance attribute
+        self.roll_no = roll_no    # Instance attribute
+        self.course = course      # Instance attribute
+
+    def introduce(self) -> None:
+        print(f"Hi, I am {self.name} (Roll No: {self.roll_no}), studying {self.course}.")
 ```
-4 4 4 4 4 4 4
-4 3 3 3 3 3 4
-4 3 2 2 2 3 4
-4 3 2 1 2 3 4
-4 3 2 2 2 3 4
-4 3 3 3 3 3 4
-4 4 4 4 4 4 4
-```
-- **Core Formula**:
-  $$\text{value}(i, j) = n - \min(\text{top}, \text{left}, \text{bottom}, \text{right})$$
-  Where:
-  - $\text{top} = i$
-  - $\text{left} = j$
-  - $\text{bottom} = (2n - 2) - i$
-  - $\text{right} = (2n - 2) - j$
 
 ---
 
-## 📊 Master Formula Reference Sheet
+### 4. Attributes: Class vs Instance
 
-| Pattern Type | Rows | Leading Spaces | Symbols / Elements | Key Formula |
-| :--- | :---: | :---: | :---: | :--- |
-| **Right Triangle** | $n$ | $0$ | $i$ stars | `* * i` |
-| **Inverted Triangle** | $n$ | $0$ | $n - i + 1$ stars | `* * (n - i)` |
-| **Full Pyramid** | $n$ | $n - i$ | $2i - 1$ stars | `" "*(n-i) + "*"*(2*i-1)` |
-| **Diamond** | $2n - 1$ | $|n - i|$ | $2(n - |n - i|) - 1$ | Combined Upright + Inverted |
-| **Floyd's Triangle** | $n$ | $0$ | $i$ numbers | `current += 1` |
-| **Binary Triangle** | $n$ | $0$ | $i$ bits | `(i + j) % 2` or `1 - state` |
-| **Palindromic Pyramid** | $n$ | $n - i$ | $1 \to i \to 1$ | Ascending + Descending loops |
-| **Hollow Pyramid** | $n$ | $n - i$ | Boundary stars | Inner spaces $= 2i - 3$ |
-| **Concentric Square** | $2n - 1$ | $0$ | $(2n - 1)$ per row | $n - \min(\text{distances})$ |
+```python
+class Developer:
+    platform = "GitHub"  # Class Attribute: Shared across ALL instances
 
----
+    def __init__(self, name: str, language: str):
+        self.name = name          # Instance Attribute: Unique to this developer
+        self.language = language  # Instance Attribute: Unique to this developer
+```
 
-## ⚡ Complexity Analysis
-
-- **Time Complexity**:
-  - Most 2D patterns iterate over $n$ rows and up to $O(n)$ columns per row.
-  - Overall Time Complexity: $\mathcal{O}(n^2)$
-  - Concentric Matrix: $\mathcal{O}((2n)^2) = \mathcal{O}(n^2)$
-- **Space Complexity**:
-  - If printed line-by-line: $\mathcal{O}(1)$ auxiliary space (excluding string output buffers).
-  - If stored in memory (Pascal triangle / grid): $\mathcal{O}(n^2)$ space.
+- **Class Attribute**: Belongs to the class itself; shared by all instances.
+- **Instance Attribute**: Belongs to a specific instance; values differ per object.
 
 ---
 
-## 💡 Top Interview Tips for Pattern Problems
+### 5. Methods (Behaviors)
 
-1. **Draw a Grid**: Always sketch an index table on paper showing row index $i$ against column index $j$.
-2. **Tabulate Relationships**: Create columns for:
-   - Row $i$
-   - Number of leading spaces
-   - Number of symbols/digits
-   - Value of symbols
-3. **Spot Linearity**: Notice if the counts form an Arithmetic Progression (e.g., $1, 3, 5, 7 \implies 2i - 1$).
-4. **Leverage String Multiplication**: In Python, `" " * k` and `"* " * k` make pattern printing significantly cleaner than nested manual loops.
-5. **Handle Symmetries Separately**: Don't try to solve complex diamonds or butterflies in a single convoluted loop—split them into top and bottom halves.
+Methods define what actions an object can perform or how its internal attributes change over time.
+
+```python
+class BankAccount:
+    def __init__(self, account_holder: str, initial_balance: float = 0.0):
+        self.account_holder = account_holder
+        self.balance = initial_balance
+
+    def deposit(self, amount: float) -> None:
+        if amount > 0:
+            self.balance += amount
+            print(f"[+] Deposited ${amount:.2f}. Balance: ${self.balance:.2f}")
+
+    def withdraw(self, amount: float) -> None:
+        if 0 < amount <= self.balance:
+            self.balance -= amount
+            print(f"[+] Withdrew ${amount:.2f}. Balance: ${self.balance:.2f}")
+        else:
+            print("[-] Insufficient balance or invalid amount.")
+```
 
 ---
 
-## 💻 How to Run the Code
+## 🔍 Built-in Object Inspection Tools
 
-Run the master script directly using Python:
+Python offers built-in utilities to inspect and verify objects at runtime:
 
+| Function | Purpose | Example | Result |
+| :--- | :--- | :--- | :--- |
+| `type(obj)` | Returns the class of an object | `type(s1)` | `<class '__main__.Student'>` |
+| `isinstance(obj, Class)` | Checks if `obj` is an instance of `Class` | `isinstance(s1, Student)` | `True` |
+| `hasattr(obj, 'attr')` | Checks if object has a given attribute | `hasattr(s1, 'name')` | `True` |
+| `getattr(obj, 'attr')` | Reads attribute value dynamically | `getattr(s1, 'course')` | `'Computer Science'` |
+| `id(obj)` | Returns unique memory address identifier | `id(s1)` | `14051...` |
+
+---
+
+## 🔮 Preview: The Four Pillars of OOP (Coming Day 24)
+
+While today builds the foundational syntax and mechanics of Classes and Objects, tomorrow (**Day 24**) will deep dive into the **Four Pillars of OOP**:
+
+```
+                  ┌───────────────────────────────────────────────┐
+                  │              THE FOUR PILLARS OF OOP          │
+                  │                 (Coming in Day 24)            │
+                  └───────┬───────────┬───────────┬───────────┬───┘
+                          │           │           │           │
+       ┌──────────────────┘           │           │           └──────────────────┐
+       ▼                              ▼           ▼                              ▼
+┌──────────────┐              ┌──────────────┐ ┌──────────────┐          ┌──────────────┐
+│ ENCAPSULATION│              │ INHERITANCE  │ │ POLYMORPHISM │          │ ABSTRACTION  │
+│ Restrict     │              │ Code reuse   │ │ Many forms / │          │ Hide complex │
+│ direct access│              │ parent-child │ │ uniform      │          │ internal     │
+│ to internal  │              │ hierarchy    │ │ interface    │          │ details      │
+│ state        │              │              │ │              │          │              │
+└──────────────┘              └──────────────┘ └──────────────┘          └──────────────┘
+```
+
+1. **Encapsulation**: Restricting direct access to data using private/protected attributes (`_protected`, `__private`) and getters/setters.
+2. **Inheritance**: Creating child classes that inherit attributes and methods from a parent class for code reuse.
+3. **Polymorphism**: The ability of different classes to respond to the same method call in their own specialized way.
+4. **Abstraction**: Hiding internal implementation complexities and exposing only high-level essential interfaces (using `abc.ABC` and `@abstractmethod`).
+
+---
+
+## 🚀 Code Implementation & Running the Code
+
+### File: `day23.py`
+All practical examples, demonstrations, and inspection routines are included in [`day23.py`](day23.py).
+
+### How to Run:
 ```bash
-python day22.py
-```
+# Clone the repository
+git clone https://github.com/harish-0987/DAY-23-OF-PYTHON.git
 
-All 28 pattern problems across all categories will run sequentially with clean headers and visual outputs in your terminal!
+# Navigate into the project folder
+cd DAY-23-OF-PYTHON
+
+# Run the Day 23 script
+python day23.py
+```
 
 ---
 
-## 🚀 Summary & Takeaways
+## 📝 Summary & Key Takeaways
 
-- You now possess an intuitive mental blueprint to decompose and code any 2D pattern question.
-- Mastered loop bounds, space calculations, ASCII character conversions, palindromes, and 2D distance transforms.
-- Built a reusable reference implementation for technical interview preparation.
+- **OOP** is a paradigm that groups related state (data) and behavior (functions) into objects.
+- A **Class** is the blueprint; an **Object** is the real instance in memory.
+- `__init__()` acts as the constructor to initialize instance attributes when an object is instantiated.
+- `self` refers to the current instance and must be the first parameter of any instance method.
+- **Class attributes** are shared by all instances, while **Instance attributes** are unique to each instance.
+- **Next Step**: Day 24 will tackle the **Four Pillars of OOP** with full practical implementations!
 
-*"Not here to be known, here to build."*
+---
+
+> *"Not here to be known, here to build."* — **Harish**
