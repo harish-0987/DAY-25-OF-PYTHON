@@ -1,415 +1,312 @@
-# Day 24: Object-Oriented Programming (OOP) - Inheritance & Its Types 🧬🐍
+# Day 25: Object-Oriented Programming (OOP) - Polymorphism in Python 🎭🐍
 
 > **Motto**: *"Not here to be known, here to build."*  
 > **Author**: Harish  
-> **Repository**: [DAY-24-OF-PYTHON](https://github.com/harish-0987/DAY-24-OF-PYTHON)
+> **Repository**: [DAY-25-OF-PYTHON](https://github.com/harish-0987/DAY-25-OF-PYTHON)
 
-Welcome to **Day 24 of Python**! Today's session is focused exclusively on **Inheritance and Its Types** in Python at a clear, practical, beginner-friendly basic level.
+Welcome to **Day 25 of Python**! Today's session is focused on **Polymorphism in Python** at a clear, practical, beginner-friendly foundational level.
 
 > [!NOTE]
-> **Scope for Today**: We focus strictly on **Inheritance and all its 5 types** along with essential foundational mechanics (`super()`, method overriding, `issubclass()`, `isinstance()`, and MRO). Other OOP topics such as Encapsulation, Polymorphism, and Abstraction are kept separate to ensure deep, focused mastery of inheritance.
+> **Scope for Today**: We explore the core concept of **Polymorphism** ("many forms") in Python OOP. We cover built-in polymorphism, Duck Typing, runtime method overriding, polymorphic functions, operator overloading with dunder methods, method overloading workarounds, and a real-world multi-payment gateway case study.
 
 ---
 
 ## 📌 Table of Contents
 
-1. [What is Inheritance? (Basic Level)](#-what-is-inheritance-basic-level)
-2. [Why Use Inheritance?](#-why-use-inheritance)
-3. [Key Terminology](#-key-terminology)
-4. [Core Mechanics of Inheritance](#-core-mechanics-of-inheritance)
-   - [1. Basic Inheritance Syntax](#1-basic-inheritance-syntax)
-   - [2. The `super()` Function & Constructor Inheritance](#2-the-super-function--constructor-inheritance)
-   - [3. Method Overriding](#3-method-overriding)
-5. [The 5 Types of Inheritance in Python](#-the-5-types-of-inheritance-in-python)
-   - [Type 1: Single Inheritance](#type-1-single-inheritance)
-   - [Type 2: Multilevel Inheritance](#type-2-multilevel-inheritance)
-   - [Type 3: Multiple Inheritance & MRO](#type-3-multiple-inheritance--mro)
-   - [Type 4: Hierarchical Inheritance](#type-4-hierarchical-inheritance)
-   - [Type 5: Hybrid Inheritance](#type-5-hybrid-inheritance)
-6. [Built-in Verification Tools (`issubclass()` & `isinstance()`)](#-built-in-verification-tools)
+1. [What is Polymorphism? (Basic Level)](#-what-is-polymorphism-basic-level)
+2. [Why Use Polymorphism?](#-why-use-polymorphism)
+3. [The 4 Dimensions of Polymorphism in Python](#-the-4-dimensions-of-polymorphism-in-python)
+   - [1. Built-in Polymorphism (Functions & Operators)](#1-built-in-polymorphism-functions--operators)
+   - [2. Duck Typing (Polymorphism Without Inheritance)](#2-duck-typing-polymorphism-without-inheritance)
+   - [3. Method Overriding (Inheritance-Based Runtime Polymorphism)](#3-method-overriding-inheritance-based-runtime-polymorphism)
+   - [4. Polymorphism via Common Functions / Interfaces](#4-polymorphism-via-common-functions--interfaces)
+4. [Operator Overloading (Syntactic Polymorphism)](#-operator-overloading-syntactic-polymorphism)
+5. [Method Overloading in Python (Workarounds)](#-method-overloading-in-python-workarounds)
+6. [Real-World Project: Multi-Payment Checkout System](#-real-world-project-multi-payment-checkout-system)
 7. [Quick Summary Comparison Table](#-quick-summary-comparison-table)
 8. [Code Implementation & Running the Code](#-code-implementation--running-the-code)
 
 ---
 
-## 💡 What is Inheritance? (Basic Level)
+## 💡 What is Polymorphism? (Basic Level)
 
-**Inheritance** is an Object-Oriented Programming (OOP) mechanism that allows a new class (**Child / Derived Class**) to acquire the attributes (variables) and methods (functions) of an existing class (**Parent / Base Class**).
+The word **Polymorphism** comes from two Greek words:
+- **Poly**: Many
+- **Morph**: Forms / Shapes
 
-Inheritance establishes an **"is-a"** relationship between entities:
-- A `Dog` **is-a** `Animal`.
-- A `Car` **is-a** `Vehicle`.
-- A `Student` **is-a** `Person`.
+In Object-Oriented Programming, **Polymorphism** is the ability of different objects to respond to the **same method call** (or operator) in their own customized, specific way.
+
+### 🎭 Real-World Analogy
+Think of a person:
+- At home with family, they act as a **parent** or **child**.
+- At work in the office, they act as an **employee**.
+- At a shopping mall, they act as a **customer**.
+
+The **same person** takes on **many forms and behaviors** depending on the context!
 
 ```
-┌──────────────────────────────────────────────┐
-│           PARENT CLASS (Base Class)          │
-│       Attributes: name, age                  │
-│       Methods: eat(), sleep()                │
-└──────────────────────┬───────────────────────┘
-                       │
-                       │ inherits
-                       ▼
-┌──────────────────────────────────────────────┐
-│           CHILD CLASS (Derived Class)        │
-│       Inherits: name, age, eat(), sleep()    │
-│       Adds: breed, bark()                    │
-└──────────────────────────────────────────────┘
+                      ┌────────────────────────┐
+                      │   Same Method Call:    │
+                      │       .speak()         │
+                      └───────────┬────────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         ▼                        ▼                        ▼
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│       Dog       │      │       Cat       │      │       Cow       │
+│  "Woof! Woof!"  │      │  "Meow! Purr!"  │      │   "Moo! Moo!"   │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
 ```
 
 ---
 
-## 🎯 Why Use Inheritance?
+## 🚀 Why Use Polymorphism?
 
-1. **Code Reusability**: Define common logic once in the parent class and reuse it across multiple child classes without rewriting code.
-2. **DRY Principle (Don't Repeat Yourself)**: Eliminates code duplication across related classes.
-3. **Extensibility**: Add child-specific attributes or methods without modifying the parent class.
-4. **Logical Organization**: Naturally models real-world hierarchies and domain relationships.
-
----
-
-## 🏷️ Key Terminology
-
-| Term | Also Known As | Meaning |
-| :--- | :--- | :--- |
-| **Parent Class** | Base Class, Super Class | The existing class whose features are being inherited. |
-| **Child Class** | Derived Class, Sub Class | The new class that inherits features from the parent class. |
-| **`super()`** | Super proxy | A built-in helper that calls parent class methods/constructors. |
-| **Overriding** | Redefinition | When a child class provides its own implementation of a parent method. |
+1. **Loose Coupling**: Calling code doesn't need to know the exact class type of an object; it only needs to know that the object responds to the required method.
+2. **Extensibility**: You can introduce brand-new classes into your application without rewriting or modifying existing consumer functions.
+3. **Cleaner Code**: Removes bloated chains of `if-elif-else isinstance(...)` checks.
+4. **Consistency**: Uniform method naming across related and unrelated components.
 
 ---
 
-## ⚙️ Core Mechanics of Inheritance
+## ⚙️ The 4 Dimensions of Polymorphism in Python
 
-### 1. Basic Inheritance Syntax
+### 1. Built-in Polymorphism (Functions & Operators)
+Python has polymorphism natively integrated into standard functions and operators:
 
-To inherit from a class, simply pass the parent class name inside parentheses after the child class name:
+- **`len()` function**:
+  - `len("Python")` -> Calculates number of characters (`6`)
+  - `len([1, 2, 3])` -> Calculates number of list elements (`3`)
+  - `len({"a": 1, "b": 2})` -> Calculates number of dictionary keys (`2`)
+
+- **`+` operator**:
+  - `10 + 20` -> Performs numerical addition (`30`)
+  - `"Hello, " + "World"` -> Performs string concatenation (`Hello, World`)
+  - `[1, 2] + [3, 4]` -> Performs list merging (`[1, 2, 3, 4]`)
+
+---
+
+### 2. Duck Typing (Polymorphism Without Inheritance)
+> *"If it walks like a duck and quacks like a duck, it's a duck."*
+
+In Python's dynamic type system, classes do **not** need to inherit from the same parent to behave polymorphically. If an object has the expected method name, Python will call it:
+
+```python
+class Duck:
+    def sound(self):
+        print("Duck: Quack, quack!")
+
+class Person:
+    def sound(self):
+        print("Person: Imitating quack!")
+
+class Robot:
+    def sound(self):
+        print("Robot: Beep-boop quack!")
+
+def play_sound(entity):
+    entity.sound()  # Duck typing: Works for any entity with sound()
+```
+
+---
+
+### 3. Method Overriding (Inheritance-Based Runtime Polymorphism)
+When a child class re-implements a method already declared in its parent class:
 
 ```python
 class Animal:
-    def __init__(self, name: str):
-        self.name = name
+    def make_sound(self):
+        return "Generic sound"
 
-    def eat(self):
-        print(f"{self.name} is eating.")
-
-# Dog inherits from Animal
 class Dog(Animal):
-    def bark(self):
-        print(f"{self.name} says: Woof! Woof!")
+    def make_sound(self):
+        return "Woof! Woof!"
 
-my_dog = Dog("Buddy")
-my_dog.eat()   # Inherited from Animal -> Buddy is eating.
-my_dog.bark()  # Defined in Dog       -> Buddy says: Woof! Woof!
+class Cat(Animal):
+    def make_sound(self):
+        return "Meow!"
+```
+
+When you loop over animals and invoke `animal.make_sound()`, Python dynamically calls the child's overridden version at runtime.
+
+---
+
+### 4. Polymorphism via Common Functions / Interfaces
+Writing generic utility functions that accept any object satisfying an expected interface:
+
+```python
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    def calculate_area(self):
+        return 3.14159 * (self.radius ** 2)
+
+class Rectangle:
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+    def calculate_area(self):
+        return self.w * self.h
+
+def display_area(shape):
+    # Polymorphic function: doesn't care if shape is Circle or Rectangle
+    print(f"Calculated Area: {shape.calculate_area():.2f}")
 ```
 
 ---
 
-### 2. The `super()` Function & Constructor Inheritance
+## ➕ Operator Overloading (Syntactic Polymorphism)
 
-When a child class defines its own `__init__()`, it overrides the parent's `__init__()`.  
-To properly initialize the parent attributes, use `super().__init__(...)`:
+Python allows custom classes to define their own behavior for standard operators (`+`, `-`, `*`, `==`, `>`, etc.) using special **dunder (double underscore) methods**:
 
+| Operator | Dunder Method | Purpose |
+| :--- | :--- | :--- |
+| `+` | `__add__(self, other)` | Addition / Combining |
+| `-` | `__sub__(self, other)` | Subtraction / Difference |
+| `*` | `__mul__(self, other)` | Multiplication / Scaling |
+| `==` | `__eq__(self, other)` | Equality comparison |
+| `>` | `__gt__(self, other)` | Greater-than comparison |
+| `<` | `__lt__(self, other)` | Less-than comparison |
+| `str()` / `print()` | `__str__(self)` | User-friendly string display |
+
+### Example: 2D Point Vector Addition
 ```python
-class Person:
-    def __init__(self, name: str, age: int):
-        self.name = name
-        self.age = age
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-class Student(Person):
-    def __init__(self, name: str, age: int, roll_no: int, course: str):
-        # Call Parent's __init__ using super()
-        super().__init__(name, age)
-        # Child-specific attributes
-        self.roll_no = roll_no
-        self.course = course
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
 
-s = Student("Harish", 21, 101, "Python Full Stack")
-print(s.name, s.age, s.roll_no, s.course)
+    def __str__(self):
+        return f"Point({self.x}, {self.y})"
+
+p1 = Point(2, 3)
+p2 = Point(4, 5)
+print(p1 + p2)  # Output: Point(6, 8)
 ```
 
 ---
 
-### 3. Method Overriding
+## 🔀 Method Overloading in Python (Workarounds)
 
-**Method Overriding** occurs when a child class implements a method with the same name as a method in its parent class. The child's method overrides the parent's default behavior:
+In languages like C++ or Java, **Method Overloading** allows multiple methods with the exact same name but different parameter lists.
 
-```python
-class Vehicle:
-    def start(self):
-        print("Vehicle starting with a physical key.")
+> [!WARNING]
+> **Python Does NOT Natively Support Traditional Method Overloading!**  
+> If you write multiple methods with the same name in the same class, the **last defined method silently overwrites** all previous ones.
 
-class ElectricCar(Vehicle):
-    def start(self):
-        # Overrides Vehicle's start method
-        print("Electric car starting silently with a push button!")
-
-v = Vehicle()
-v.start()  # Vehicle starting with a physical key.
-
-ev = ElectricCar()
-ev.start()  # Electric car starting silently with a push button!
-```
-
----
-
-## 🌐 The 5 Types of Inheritance in Python
-
-```
-1. Single            2. Multilevel         3. Multiple
-  ┌────────┐          ┌────────┐          ┌───┐     ┌───┐
-  │ Parent │          │ Grand- │          │ A │     │ B │
-  └───┬────┘          │ parent │          └──┬┘     └┬──┘
-      │               └───┬────┘             └───┬───┘
-      ▼                   ▼                      ▼
-  ┌────────┐          ┌────────┐              ┌─────┐
-  │ Child  │          │ Parent │              │  C  │
-  └────────┘          └───┬────┘              └─────┘
-                          ▼
-                      ┌────────┐
-                      │ Child  │
-                      └────────┘
-
-4. Hierarchical                         5. Hybrid
-      ┌────────┐                               ┌──────────┐
-      │ Parent │                               │  Base A  │
-      └───┬────┘                               └──┬────┬──┘
-    ┌─────┴─────┐                                 │    │
-    ▼           ▼                                 ▼    ▼
-┌───────┐   ┌───────┐                         ┌───┐    ┌───┐
-│Child 1│   │Child 2│                         │ B │    │ C │
-└───────┘   └───────┘                         └──┬┘    └┬──┘
-                                                 └───┬──┘
-                                                     ▼
-                                                  ┌─────┐
-                                                  │  D  │
-                                                  └─────┘
-```
+### Pythonic Solutions for Overloading Behavior:
+1. **Default Parameter Values**:
+   ```python
+   def add(self, a, b, c=0):
+       return a + b + c
+   ```
+2. **Variable-Length Arguments (`*args`)**:
+   ```python
+   def sum_all(self, *args):
+       return sum(args)
+   ```
+3. **Optional Parameters with `None` Check**:
+   ```python
+   def greet(self, name=None):
+       if name:
+           return f"Hello, {name}!"
+       return "Hello, Guest!"
+   ```
 
 ---
 
-### Type 1: Single Inheritance
-A child class inherits directly from **exactly one** parent class.
+## 💳 Real-World Project: Multi-Payment Checkout System
 
-- **Structure**: `Parent -> Child`
+In enterprise web applications, checkout systems interact with dozens of payment gateways (Credit Card, PayPal, UPI, Crypto, Stripe). 
 
-```python
-class Device:
-    def __init__(self, brand: str, model: str):
-        self.brand = brand
-        self.model = model
+Polymorphism allows the checkout engine to process any payment method through a single uniform `process_payment(amount)` interface:
 
-    def power_on(self):
-        print(f"{self.brand} {self.model} powered ON.")
-
-class Smartphone(Device):
-    def make_call(self, number: str):
-        print(f"Calling {number} from {self.brand} {self.model}...")
-
-phone = Smartphone("Apple", "iPhone 15")
-phone.power_on()           # Inherited from Device
-phone.make_call("123456")  # Defined in Smartphone
+```
+                  ┌───────────────────────────────┐
+                  │        PaymentGateway         │
+                  │   process_payment(amount)     │
+                  └───────────────┬───────────────┘
+                                  │
+         ┌────────────────────────┼────────────────────────┐
+         ▼                        ▼                        ▼
+┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│ CreditCardPayment│    │  PayPalPayment   │    │    UPIPayment    │
+│  Validates CVV   │    │ Redirects Portal │    │  Verifies PIN    │
+└──────────────────┘    └──────────────────┘    └──────────────────┘
 ```
 
----
-
-### Type 2: Multilevel Inheritance
-A class inherits from a child class, creating a chain of inheritance (**Grandparent -> Parent -> Child**).
-
-- **Structure**: `A -> B -> C`
-
+The checkout function:
 ```python
-class LivingThing:
-    def live(self):
-        print("LivingThing: Performs metabolic life processes.")
-
-class Bird(LivingThing):
-    def lay_eggs(self):
-        print("Bird: Lays eggs.")
-
-class Eagle(Bird):
-    def hunt(self):
-        print("Eagle: Hunts with sharp eyesight.")
-
-eagle = Eagle()
-eagle.live()      # From Grandparent (LivingThing)
-eagle.lay_eggs()  # From Parent (Bird)
-eagle.hunt()      # From Child (Eagle)
-```
-
----
-
-### Type 3: Multiple Inheritance & MRO
-A child class inherits from **two or more** parent classes.
-
-- **Structure**: `Parent1, Parent2 -> Child`
-
-```python
-class Camera:
-    def take_photo(self):
-        print("Camera: Capturing 4K photo.")
-
-class MusicPlayer:
-    def play_music(self, song: str):
-        print(f"MusicPlayer: Playing '{song}'.")
-
-class SmartGadget(Camera, MusicPlayer):
-    def browse_internet(self):
-        print("SmartGadget: Browsing web.")
-
-gadget = SmartGadget()
-gadget.take_photo()            # From Camera
-gadget.play_music("Believer")  # From MusicPlayer
-gadget.browse_internet()       # From SmartGadget
-```
-
-#### Method Resolution Order (MRO)
-When methods or attributes have name conflicts in multiple inheritance, Python resolves them using **C3 Linearization** (Method Resolution Order). Inspect the order with `ClassName.__mro__`:
-
-```python
-print(SmartGadget.__mro__)
-# (<class 'SmartGadget'>, <class 'Camera'>, <class 'MusicPlayer'>, <class 'object'>)
-```
-
----
-
-### Type 4: Hierarchical Inheritance
-**Multiple child classes** inherit from a **single parent class**.
-
-- **Structure**: `Parent -> Child1` and `Parent -> Child2`
-
-```python
-class BankAccount:
-    def __init__(self, holder: str, balance: float):
-        self.holder = holder
-        self.balance = balance
-
-    def check_balance(self):
-        print(f"Holder: {self.holder} | Balance: ${self.balance:,.2f}")
-
-class SavingsAccount(BankAccount):
-    def calculate_interest(self, rate: float = 4.0):
-        print(f"Interest: ${(self.balance * rate) / 100:,.2f}")
-
-class CurrentAccount(BankAccount):
-    def calculate_overdraft(self, limit: float = 50000.0):
-        print(f"Overdraft Limit: ${limit:,.2f}")
-
-# Both classes share BankAccount features
-sav = SavingsAccount("Harish", 150000.0)
-sav.check_balance()
-sav.calculate_interest()
-
-cur = CurrentAccount("Build Corp", 500000.0)
-cur.check_balance()
-cur.calculate_overdraft()
-```
-
----
-
-### Type 5: Hybrid Inheritance
-A combination of **two or more** types of inheritance (for example, combining Hierarchical and Multiple inheritance).
-
-- **Structure**: `University -> (Faculty, StudentMember) -> TeachingAssistant`
-
-```python
-class University:
-    def __init__(self, name: str = "Tech University"):
-        self.uni_name = name
-
-    def show_institution(self):
-        print(f"Institution: {self.uni_name}")
-
-# Hierarchical from University
-class Faculty(University):
-    def teach(self, subject: str):
-        print(f"Faculty teaching {subject}.")
-
-class StudentMember(University):
-    def study(self, subject: str):
-        print(f"Student studying {subject}.")
-
-# Multiple from Faculty and StudentMember
-class TeachingAssistant(Faculty, StudentMember):
-    def assist_lab(self):
-        print("Assisting in Python lab.")
-
-ta = TeachingAssistant("National Tech Institute")
-ta.show_institution()  # From University (Base)
-ta.teach("Python OOP") # From Faculty
-ta.study("Algorithms") # From StudentMember
-ta.assist_lab()        # From TeachingAssistant
-```
-
----
-
-## 🔍 Built-in Verification Tools
-
-Python provides two built-in functions to verify inheritance and class relationships:
-
-### 1. `issubclass(ChildClass, ParentClass)`
-Checks if a class is a direct or indirect subclass of another class.
-
-```python
-issubclass(Dog, Animal)                # True
-issubclass(Animal, Dog)                # False
-issubclass(Eagle, LivingThing)         # True (Multilevel)
-issubclass(TeachingAssistant, Faculty) # True (Hybrid)
-issubclass(Dog, object)                # True (All Python classes inherit from object)
-```
-
-### 2. `isinstance(object, Class)`
-Checks if an instance is an object of a class or any of its parent classes.
-
-```python
-d = Dog("Rocky")
-isinstance(d, Dog)     # True
-isinstance(d, Animal)  # True (Inherited)
-isinstance(d, object)  # True
+def checkout(payment_method: PaymentGateway, amount: float):
+    print(f"Charging ${amount}...")
+    payment_method.process_payment(amount)
+    print("Order confirmed!")
 ```
 
 ---
 
 ## 📊 Quick Summary Comparison Table
 
-| Type | Parents | Children | Real-World Pattern | Example |
-| :--- | :---: | :---: | :--- | :--- |
-| **Single** | 1 | 1 | Direct specialization | `Device -> Smartphone` |
-| **Multilevel** | 1 per level | Chain | Generational ancestry | `LivingThing -> Bird -> Eagle` |
-| **Multiple** | 2+ | 1 | Combining capabilities | `Camera + MusicPlayer -> SmartGadget` |
-| **Hierarchical** | 1 | 2+ | Common category | `BankAccount -> Savings, Current` |
-| **Hybrid** | Mixed | Mixed | Complex domain modeling | `University -> Faculty, Student -> TA` |
+| Polymorphism Type | Mechanism | Inheritance Needed? | Example |
+| :--- | :--- | :---: | :--- |
+| **Built-in** | Language engine | No | `len("abc")`, `len([1, 2])`, `1 + 2`, `'a' + 'b'` |
+| **Duck Typing** | Dynamic method dispatch | No | Any object implementing `.sound()` or `.swim()` |
+| **Method Overriding** | Subclass redefines parent method | Yes | `Dog.make_sound()` overriding `Animal.make_sound()` |
+| **Operator Overloading** | Dunder magic methods | No | `p1 + p2` via `__add__()`, `b1 > b2` via `__gt__()` |
+| **Method Overloading** | Default args / `*args` | No | `calc.add(10, 20)` & `calc.add(10, 20, 30)` |
 
 ---
 
-## 🚀 Code Implementation & Running the Code
+## 💻 Code Implementation & Running the Code
 
-### File: `day24.py`
-All practical examples, demonstrations, and inspection routines are included in [`day24.py`](day24.py).
+The complete source code is provided in [`day25.py`](file:///c:/Users/pedda/OneDrive/Desktop/python%201/day25.py).
 
 ### How to Run:
 ```bash
-# Clone the repository
-git clone https://github.com/harish-0987/DAY-24-OF-PYTHON.git
-
-# Navigate into the project folder
-cd DAY-24-OF-PYTHON
-
-# Run the Day 24 script
-python day24.py
+python day25.py
 ```
 
----
+### Sample Output:
+```text
+======================================================================
+ DAY 25: OBJECT-ORIENTED PROGRAMMING (OOP) - POLYMORPHISM IN PYTHON
+ Author: Harish | Repository: DAY-25-OF-PYTHON
+ Motto: 'Not here to be known, here to build.'
+======================================================================
 
-## 📝 Key Takeaways
+--- Polymorphism with len() ---
+len(str)  : len('Python OOP')                  -> 10 characters
+len(list) : len([10, 20, 30, 40, 50])       -> 5 items
 
-- **Inheritance** allows child classes to derive variables and methods from parent classes.
-- Models the **"is-a"** relationship and maximizes code reusability.
-- Use `super().__init__()` to initialize parent class state without hardcoding parent names.
-- **Method Overriding** allows a child class to provide customized behavior for parent methods.
-- Python supports **all 5 types of inheritance**: Single, Multilevel, Multiple, Hierarchical, and Hybrid.
-- Use `issubclass()` and `isinstance()` to inspect class hierarchies at runtime.
-- For multiple inheritance, Python uses **MRO (Method Resolution Order)** via C3 Linearization to prevent ambiguity.
+--- Polymorphism with '+' Operator ---
+Integer Addition      : 15 + 25           = 40
+String Concatenation  : 'Hello, ' + 'Dev' = Hello, Dev
+
+--- Duck Typing ---
+Testing entity: Duck
+Duck: Quack, quack!
+Duck: Swimming gracefully in the pond.
+
+--- Method Overriding ---
+I am Buddy, and I say: Woof! Woof!
+I am Luna, and I say: Meow! Purr!
+
+--- Operator Overloading ---
+p1 + p2     = Point(8, 11)
+Total Pages : 1558 pages
+
+--- Real-World Payment Gateways ---
+[Credit Card] Charging $149.99 to card ****-****-****-4567... Payment Approved!
+[PayPal] Debited $49.50 from PayPal balance... Order placed successfully!
+[UPI] Transaction Success for $25.00!
+
+======================================================================
+ DAY 25 COMPLETE: Polymorphism in Python Mastered Successfully!
+ 'Not here to be known, here to build.'
+======================================================================
+```
 
 ---
 
